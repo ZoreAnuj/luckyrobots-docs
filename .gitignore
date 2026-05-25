@@ -1,0 +1,27 @@
+# Python / MkDocs
+.venv/
+venv/
+__pycache__/
+*.pyc
+/site/
+
+# Generated API reference markdown (regenerated from engine source on every build)
+/docs/api/
+
+# .NET build output for the generator tool
+tools/**/bin/
+tools/**/obj/
+
+# Engine source brought in for local generation (submodule or manual clone).
+# Tracked as a submodule via .gitmodules if used; ignore a manually-cloned copy.
+/engine-local/
+
+# Local, machine-specific generator overrides
+tools/ApiDocGen/apidocgen.local.json
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vs/
+*.user

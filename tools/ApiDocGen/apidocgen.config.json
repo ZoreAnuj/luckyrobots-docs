@@ -1,0 +1,64 @@
+{
+  "// about": "Config for the LuckyEngine C# -> Markdown API doc generator. Source path is resolved at runtime: --source CLI arg > LUCKYENGINE_SCRIPTCORE env var > first existing entry in sourceRootCandidates.",
+
+  "projectName": "LuckyEngine",
+  "rootNamespace": "Hazel",
+
+  "sourceRootCandidates": [
+    "./engine/Hazel-ScriptCore/Source",
+    "../LuckyEngine/Hazel-ScriptCore/Source",
+    "../LuckyEngine/PRs/pr-1/Hazel-ScriptCore/Source"
+  ],
+
+  "outputDir": "docs/api",
+
+  "includeProtected": true,
+  "preprocessorSymbols": [],
+
+  "excludeNamespaces": [
+    "Hazel.Net",
+    "Hazel.Interop",
+    "Hazel.Internal",
+    "Hazel.Rpc",
+    "Hazel.Data"
+  ],
+
+  "excludeFileGlobs": [
+    "**/Generated/**",
+    "**/Grpc/**",
+    "**/Net/**",
+    "**/Interop/**",
+    "**/Internal/**",
+    "**/Proto/**"
+  ],
+
+  "excludeTypeNamePatterns": [
+    "InternalCalls",
+    "*ServiceImpl",
+    "*GrpcApi",
+    "*Interop"
+  ],
+
+  "categories": [
+    { "slug": "scene", "title": "Scene & Entities", "order": 10, "folders": ["Scene"],
+      "summary": "The scene graph: entities, their lifecycle, and scene-level queries. This is where scripting begins — most scripts derive from `Entity`." },
+    { "slug": "components", "title": "Components", "order": 20, "components": true,
+      "summary": "Data and behavior you attach to entities (transforms, meshes, lights, cameras, rigid bodies, audio, and more). Retrieved with `GetComponent<T>()`." },
+    { "slug": "math", "title": "Math", "order": 30, "folders": ["Math"],
+      "summary": "Vectors, quaternions, matrices, and math helpers for transforms, interpolation, and randomness." },
+    { "slug": "physics", "title": "Physics", "order": 40, "folders": ["Physics", "Physics2D"],
+      "summary": "3D and 2D physics queries, ray casts, colliders, materials, and force application." },
+    { "slug": "rendering", "title": "Rendering", "order": 50, "folders": ["Renderer"],
+      "summary": "Meshes, materials, textures, colors, and the debug/immediate-mode renderer." },
+    { "slug": "audio", "title": "Audio", "order": 60, "folders": ["Audio"],
+      "summary": "Play, control, and position sounds in the scene." },
+    { "slug": "animation", "title": "Animation", "order": 70, "folders": ["Animation"],
+      "summary": "Animation sequences and playback." },
+    { "slug": "core", "title": "Core & Input", "order": 80, "folders": ["Core", ""],
+      "summary": "Engine fundamentals scripts use every frame: input, logging, timing, application state, and assets." },
+    { "slug": "attributes", "title": "Editor Attributes", "order": 90, "folders": ["Attributes"],
+      "summary": "Attributes that control how your script's public fields appear and behave in the editor Inspector (sliders, ranges, tooltips, grouping, conditional visibility)." },
+    { "slug": "learn", "title": "Robots & Learning (MDP)", "order": 100, "folders": ["Learn", "Robots"],
+      "summary": "APIs for authoring robot agents and reinforcement-learning tasks: the MDP component model (observations, rewards, terminations, randomization), robot controllers, and agent management." }
+  ]
+}

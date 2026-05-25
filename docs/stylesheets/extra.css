@@ -1,0 +1,21 @@
+/* Slightly wider content so wide signature code blocks and member tables breathe. */
+.md-grid {
+  max-width: 68rem;
+}
+
+/* Make the signature code blocks on reference pages stand out a touch. */
+.md-typeset h3 + p > code,
+.md-typeset h3 + .highlight {
+  scroll-margin-top: 4rem;
+}
+
+/* Member tables: keep the first (signature) column from wrapping too aggressively. */
+.md-typeset table:not([class]) td:first-child code {
+  white-space: nowrap;
+}
+
+/* Card grid on the landing page. */
+.md-typeset .grid.cards > :is(ul, ol) > li,
+.md-typeset .grid > .card {
+  border-radius: 0.4rem;
+}

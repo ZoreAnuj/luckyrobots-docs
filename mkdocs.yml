@@ -1,0 +1,94 @@
+site_name: LuckyEngine Scripting Docs
+site_description: C# scripting API reference and guides for LuckyEngine.
+site_author: Lucky Robots
+# Update to the published URL once hosting is decided (e.g. https://luckyrobots.github.io/LuckyEngine-docs/).
+site_url: https://luckyrobots.github.io/LuckyEngine-docs/
+
+# The API source of truth lives in the engine repo; link there rather than offering "edit" on generated pages.
+repo_url: https://github.com/luckyrobots/LuckyEngine
+repo_name: luckyrobots/LuckyEngine
+edit_uri: ""
+
+docs_dir: docs
+# site/ is the build output (gitignored).
+
+# Treat broken internal links and anchors as warnings so `mkdocs build --strict` (used in CI) catches them.
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  links:
+    anchors: warn
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.tabs          # top-level sections become tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes       # a folder's index.md is its section landing page
+    - navigation.top           # back-to-top button
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy        # copy button on code blocks
+    - content.code.annotate
+    - toc.follow               # right-hand member list follows scroll
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - awesome-pages   # builds nav from the docs/ tree + .pages files (so the generated API tree needs no hand-maintained nav)
+
+extra:
+  version:
+    provider: mike   # renders the 2026.1 / 2026.2 version selector from versions.json on the gh-pages branch
+    default: latest
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/luckyrobots/LuckyEngine
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - abbr
+  - admonition          # !!! note / warning (used for Obsolete callouts)
+  - attr_list           # {#explicit-anchor} ids on member headings + cross-references
+  - md_in_html          # <code> cells inside tables
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+      permalink_title: Link to this section
+      toc_depth: 3       # include ### member headings in the on-page table of contents
+  - pymdownx.highlight:
+      anchor_linenums: true
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
