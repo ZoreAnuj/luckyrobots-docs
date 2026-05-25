@@ -25,7 +25,11 @@ param(
 
 $ErrorActionPreference = "Stop"
 $repo = Split-Path $PSScriptRoot -Parent
-$mike = "$repo/.venv/Scripts/mike.exe"
+
+# mike shells out to `mkdocs`, so the venv's Scripts dir must be on PATH for this process.
+$venvScripts = Join-Path $repo ".venv/Scripts"
+$env:PATH = "$venvScripts;$env:PATH"
+$mike = Join-Path $venvScripts "mike.exe"
 
 # 1. Regenerate the API reference so the published version matches current source.
 & "$PSScriptRoot/generate.ps1" -Source $Source
