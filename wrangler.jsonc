@@ -1,0 +1,37 @@
+{
+  // Cloudflare Worker (static assets) that serves the built docs at docs.luckyrobots.com.
+  //
+  // What gets served is NOT this repo — it's the *built, versioned* site that `mike`
+  // writes to the `gh-pages` branch. CI exports that branch into ./_site and points
+  // `assets.directory` at it (see .github/workflows/docs.yml). Locally, `mkdocs build`
+  // produces ./site, so for a quick `wrangler dev` you can repoint `directory` there.
+  //
+  // The Worker `name` and `routes` are intentionally identical to the old luckyengine-doc
+  // repo, so deploying from here UPDATES the same Worker and takes over the custom domain.
+  // Cutover is just: deploy from this repo, stop deploying the old one.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "luckyengine-docs",
+  "compatibility_date": "2025-05-23",
+  "assets": {
+    "directory": "./_site",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  "routes": [
+    {
+      "pattern": "docs.luckyrobots.com/*",
+      "zone_name": "luckyrobots.com"
+    },
+    {
+      "pattern": "docs.luckyrobots.com",
+      "zone_name": "luckyrobots.com",
+      "custom_domain": true
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "placement": {
+    "mode": "smart"
+  }
+}

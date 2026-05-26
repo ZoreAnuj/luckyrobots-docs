@@ -45,8 +45,8 @@ plugins:
 
 extra:
   version:
-    provider: mike   # renders the 2026.1 / 2026.2 version selector from versions.json on the gh-pages branch
-    default: latest
+    provider: mike    # renders the version selector from versions.json on the gh-pages branch
+    default: stable   # the alias `/` redirects to (see .github/versions.json); mike set-default keeps it in sync
 
 extra_css:
   - stylesheets/extra.css

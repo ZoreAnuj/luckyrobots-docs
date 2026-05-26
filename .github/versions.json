@@ -1,0 +1,13 @@
+{
+  "// _comment": "Maps each maintained engine-docs version to its mike alias, dropdown title, and whether it is the site default (the version `/` redirects to). Each version is published from its own long-lived branch `release/<version>`; pushing to that branch republishes only that version's slot on gh-pages. To add a version: create release/<version>, add an entry here. To promote preview -> stable on release: flip `default` and the alias/title here, then push the branch.",
+  "2026.1": {
+    "alias": "stable",
+    "title": "2026.1",
+    "default": true
+  },
+  "2026.2": {
+    "alias": "preview",
+    "title": "2026.2 (Preview)",
+    "default": false
+  }
+}

@@ -1,75 +1,111 @@
 name: Docs
 
+# Versioned docs pipeline.
+#
+#   PR / push to any non-release branch  -> strict build only (no publish, no deploy).
+#   push to release/<version>            -> publish that version with mike + deploy live.
+#   workflow_dispatch (version input)    -> manually (re)publish a version (e.g. to fix an old one).
+#
+# Each maintained version lives on its own long-lived branch `release/<version>` and owns one
+# slot on the gh-pages branch. mike merges versions onto gh-pages; CI then exports gh-pages and
+# uploads the whole tree to the Cloudflare Worker. The C# API reference under docs/scripting/api/
+# is committed (devs run tools/ApiDocGen locally), so CI needs only Python + mike + wrangler.
+
 on:
-  # Validate the build on every push / PR to main (no deploy).
   push:
-    branches: [main]
+    branches: ["release/**"]
   pull_request:
-    branches: [main]
-  # Publish a version on demand.
   workflow_dispatch:
     inputs:
       version:
-        description: "Version label to publish (e.g. 2026.1)"
+        description: "Version to (re)publish, e.g. 2026.1 (must exist in .github/versions.json)"
         required: true
-      alias:
-        description: 'Alias for this version (e.g. "latest")'
-        required: false
-        default: latest
-      engine_ref:
-        description: "LuckyEngine branch/tag to generate from"
-        required: false
-        default: mujoco
 
 permissions:
-  contents: write   # mike needs to push the gh-pages branch
+  contents: write # mike pushes the gh-pages branch
+
+# Serialize deploys: multiple release branches publishing at once would race on gh-pages.
+concurrency:
+  group: docs-deploy
+  cancel-in-progress: false
 
 jobs:
-  docs:
+  validate:
+    name: Build (strict)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout docs repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          fetch-depth: 0          # full history so mike can update gh-pages
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Strict build (fails on broken links/anchors)
+        run: mkdocs build --strict
 
-      - name: Checkout engine source (API source of truth)
-        uses: actions/checkout@v4
+  deploy:
+    name: Publish & deploy
+    needs: validate
+    # Only on release-branch pushes and manual dispatch — never on PRs.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
         with:
-          repository: luckyrobots/LuckyEngine
-          ref: ${{ github.event.inputs.engine_ref || 'mujoco' }}
-          path: engine-src
-          # If LuckyEngine is private, add a PAT with read access as the ENGINE_REPO_TOKEN secret.
-          token: ${{ secrets.ENGINE_REPO_TOKEN || github.token }}
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "9.0.x"
+          fetch-depth: 0 # full history so mike can update gh-pages
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: pip install -r requirements.txt
 
-      - name: Install Python deps
-        run: pip install -r requirements.txt
-
-      - name: Generate API reference Markdown
-        run: >
-          dotnet run --project tools/ApiDocGen -c Release --
-          --root . --source engine-src/Hazel-ScriptCore/Source
-
-      - name: Build site (strict — fails on broken links/anchors)
-        run: mkdocs build --strict
+      - name: Resolve version / alias / title from .github/versions.json
+        id: ver
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION="${GITHUB_REF_NAME#release/}"
+          fi
+          CONF=".github/versions.json"
+          if ! jq -e --arg v "$VERSION" 'has($v)' "$CONF" >/dev/null; then
+            echo "::error::Version '$VERSION' is not defined in $CONF"; exit 1
+          fi
+          {
+            echo "version=$VERSION"
+            echo "alias=$(jq -r --arg v "$VERSION" '.[$v].alias' "$CONF")"
+            echo "title=$(jq -r --arg v "$VERSION" '.[$v].title' "$CONF")"
+            echo "default=$(jq -r --arg v "$VERSION" '.[$v].default' "$CONF")"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Configure git for mike
-        if: github.event_name == 'workflow_dispatch'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Publish version with mike
-        if: github.event_name == 'workflow_dispatch'
+      - name: Fetch existing gh-pages (so we merge versions, not overwrite)
+        run: git fetch origin gh-pages || echo "gh-pages does not exist yet — first publish"
+
+      - name: Publish this version with mike
         run: |
+          set -euo pipefail
           mike deploy --push --update-aliases \
-            "${{ github.event.inputs.version }}" "${{ github.event.inputs.alias }}"
-          mike set-default --push --allow-empty "${{ github.event.inputs.alias }}"
+            --title "${{ steps.ver.outputs.title }}" \
+            "${{ steps.ver.outputs.version }}" "${{ steps.ver.outputs.alias }}"
+          if [ "${{ steps.ver.outputs.default }}" = "true" ]; then
+            mike set-default --push "${{ steps.ver.outputs.alias }}"
+          fi
+
+      - name: Export gh-pages tree for Cloudflare
+        run: |
+          set -euo pipefail
+          rm -rf _site && mkdir _site
+          git archive gh-pages | tar -x -C _site
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.45.2"
+          command: deploy

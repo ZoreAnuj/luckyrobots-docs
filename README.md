@@ -115,10 +115,48 @@ anchor). No deploy.
 
 ## Deployment
 
-**Coming soon** — Cloudflare deployment instructions will be added here.
+The live site at **<https://docs.luckyrobots.com>** is a Cloudflare Worker (static assets).
+CI builds the versioned site with [mike](https://github.com/jimporter/mike) and uploads it;
+`wrangler.jsonc` binds the custom domain (same Worker `name`/routes as the legacy
+`luckyengine-doc` repo, so this repo simply takes it over).
 
-For now, build the static site locally with `mkdocs build` (output in `site/`), or preview
-it live with the [quick start](#quick-start-local-preview) above. Release versioning is
-wired up with [mike](https://github.com/jimporter/mike) (the header version dropdown), and
-an interim manual publish to GitHub Pages still lives in `docs.yml` (Actions → **Docs** →
-*Run workflow*) until the Cloudflare pipeline lands.
+### Versioning model (mike)
+
+Each maintained version owns its own long-lived branch and one slot on the `gh-pages` branch:
+
+| Branch | Publishes | Alias | Dropdown title | Default? |
+|--------|-----------|-------|----------------|----------|
+| `release/2026.1` | `2026.1/` | `stable` | `2026.1` | ✅ (`/` lands here) |
+| `release/2026.2` | `2026.2/` | `preview` | `2026.2 (Preview)` | |
+
+The mapping lives in [`.github/versions.json`](.github/versions.json). Versions are **not**
+parallel folders — your `docs/` tree is always one version; mike snapshots it into the
+matching slot on `gh-pages` and maintains the dropdown's `versions.json`.
+
+### Publishing
+
+- **Update a live version** — commit to its `release/<version>` branch (regenerate the API
+  reference first if engine source changed) and push. CI republishes *only that version's
+  slot* and redeploys; other versions are untouched.
+- **Add a new version** — create `release/<version>`, add an entry to
+  `.github/versions.json`, push.
+- **Republish manually** (e.g. fix an old version) — Actions → **Docs** → *Run workflow*,
+  enter the version label.
+
+What CI does on a release push: strict `mkdocs build` → `git fetch` existing `gh-pages` →
+`mike deploy --push --update-aliases <version> <alias>` (+ `mike set-default` if it's the
+default) → export `gh-pages` to `./_site` → `wrangler deploy`.
+
+### One-time setup
+
+- Repo secrets **`CLOUDFLARE_API_TOKEN`** and **`CLOUDFLARE_ACCOUNT_ID`** (same values the
+  old repo used; a token with *Workers Scripts: Edit* on the `luckyrobots.com` account).
+- Create the `release/<version>` branches.
+- After the first successful deploy from here, stop deploying the old `luckyengine-doc`
+  repo (disable its workflow) — both target the same Worker.
+
+### Local preview
+
+`mkdocs build` outputs to `site/`; `mkdocs serve` live-previews (see the
+[quick start](#quick-start-local-preview)). To preview the *versioned* build locally,
+`mike deploy <version>` (without `--push`) then `mike serve`.
