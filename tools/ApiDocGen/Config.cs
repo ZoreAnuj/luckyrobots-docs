@@ -6,11 +6,11 @@ namespace LuckyEngine.ApiDocGen;
 /// <summary>Generator configuration, loaded from apidocgen.config.json (+ optional local override).</summary>
 public sealed class Config
 {
-    public string ProjectName { get; set; } = "LuckyEngine";
+    public string ProjectName { get; set; } = "Lucky Engine";
     public string RootNamespace { get; set; } = "Hazel";
 
     public List<string> SourceRootCandidates { get; set; } = new();
-    public string OutputDir { get; set; } = "docs/api";
+    public string OutputDir { get; set; } = "docs/scripting/api";
 
     public bool IncludeProtected { get; set; } = true;
     public List<string> PreprocessorSymbols { get; set; } = new();
@@ -45,7 +45,7 @@ public sealed class Config
             {
                 if (local.SourceRootCandidates.Count > 0)
                     cfg.SourceRootCandidates.InsertRange(0, local.SourceRootCandidates);
-                if (!string.IsNullOrWhiteSpace(local.OutputDir) && local.OutputDir != "docs/api")
+                if (!string.IsNullOrWhiteSpace(local.OutputDir) && local.OutputDir != "docs/scripting/api")
                     cfg.OutputDir = local.OutputDir;
             }
         }

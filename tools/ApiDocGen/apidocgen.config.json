@@ -1,7 +1,7 @@
 {
   "// about": "Config for the LuckyEngine C# -> Markdown API doc generator. Source path is resolved at runtime: --source CLI arg > LUCKYENGINE_SCRIPTCORE env var > first existing entry in sourceRootCandidates.",
 
-  "projectName": "LuckyEngine",
+  "projectName": "Lucky Engine",
   "rootNamespace": "Hazel",
 
   "sourceRootCandidates": [
@@ -10,7 +10,7 @@
     "../LuckyEngine/PRs/pr-1/Hazel-ScriptCore/Source"
   ],
 
-  "outputDir": "docs/api",
+  "outputDir": "docs/scripting/api",
 
   "includeProtected": true,
   "preprocessorSymbols": [],

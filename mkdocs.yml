@@ -1,13 +1,7 @@
-site_name: LuckyEngine Scripting Docs
-site_description: C# scripting API reference and guides for LuckyEngine.
+site_name: Lucky Engine Docs
+site_description: Documentation for Lucky Engine — the robotics simulation and training platform. Includes the C# scripting guides and API reference.
 site_author: Lucky Robots
-# Update to the published URL once hosting is decided (e.g. https://luckyrobots.github.io/LuckyEngine-docs/).
-site_url: https://luckyrobots.github.io/LuckyEngine-docs/
-
-# The API source of truth lives in the engine repo; link there rather than offering "edit" on generated pages.
-repo_url: https://github.com/luckyrobots/LuckyEngine
-repo_name: luckyrobots/LuckyEngine
-edit_uri: ""
+site_url: https://docs.luckyrobots.com
 
 docs_dir: docs
 # site/ is the build output (gitignored).
@@ -22,7 +16,9 @@ validation:
 
 theme:
   name: material
+  custom_dir: overrides  # adds <link rel=preload> for the brand fonts (see overrides/main.html)
   language: en
+  font: false            # use the brand fonts defined in extra.css, not Google's Roboto
   features:
     - navigation.tabs          # top-level sections become tabs
     - navigation.tabs.sticky
@@ -30,6 +26,8 @@ theme:
     - navigation.indexes       # a folder's index.md is its section landing page
     - navigation.top           # back-to-top button
     - navigation.footer
+    - navigation.instant       # XHR page swaps instead of full reloads — loaded fonts persist (kills per-nav FOUT)
+    - navigation.instant.progress
     - search.suggest
     - search.highlight
     - search.share
@@ -37,22 +35,9 @@ theme:
     - content.code.annotate
     - toc.follow               # right-hand member list follows scroll
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/weather-night
-        name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to light mode
-  icon:
-    repo: fontawesome/brands/github
+    scheme: slate        # dark only — no light/dark toggle
+    primary: custom
+    accent: indigo
 
 plugins:
   - search
@@ -62,9 +47,6 @@ extra:
   version:
     provider: mike   # renders the 2026.1 / 2026.2 version selector from versions.json on the gh-pages branch
     default: latest
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/luckyrobots/LuckyEngine
 
 extra_css:
   - stylesheets/extra.css
@@ -76,6 +58,7 @@ markdown_extensions:
   - md_in_html          # <code> cells inside tables
   - tables
   - footnotes
+  - def_list           # definition lists
   - toc:
       permalink: true
       permalink_title: Link to this section
@@ -84,7 +67,19 @@ markdown_extensions:
       anchor_linenums: true
       pygments_lang_class: true
   - pymdownx.inlinehilite
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid          # ```mermaid diagrams (Material auto-loads mermaid.js)
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.betterem            # robust **bold** / *italic* parsing
+  - pymdownx.caret               # ^^insert^^ and ^superscript^
+  - pymdownx.mark                # ==highlight==
+  - pymdownx.tilde               # ~~strikethrough~~ and ~subscript~
+  - pymdownx.keys                # ++ctrl+alt+del++ keyboard keys
+  - pymdownx.critic              # {++added++} {--removed--} {~~a~>b~~} {==marked==} {>>note<<}
+  - pymdownx.tasklist:
+      custom_checkbox: true      # - [x] task lists with themed checkboxes
   - pymdownx.details
   - pymdownx.snippets
   - pymdownx.tabbed:

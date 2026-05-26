@@ -1,5 +1,5 @@
 nav:
   - index.md
-  - getting-started
-  - guides
-  - api
+  - scripting
+  # Future engine systems become top-level folders here — each one its own tab
+  # (e.g. rendering, editor, simulation, the Python SDK).

@@ -1,6 +1,6 @@
 # Robots & MDP Tasks
 
-LuckyEngine exposes an engine-side **MDP** (Markov Decision Process) component model for
+Lucky Engine exposes an engine-side **MDP** (Markov Decision Process) component model for
 authoring robot agents and reinforcement-learning tasks. Training frameworks discover
 these components and compose them into a task contract.
 

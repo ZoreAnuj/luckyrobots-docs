@@ -2,7 +2,7 @@
 
 ## The scripting model
 
-LuckyEngine scripts are C# classes in the `Hazel` namespace that derive from
+Lucky Engine scripts are C# classes in the `Hazel` namespace that derive from
 [`Entity`](../api/scene/entity.md). You attach a compiled script to an entity in the
 editor (via a **Script** component), and the engine calls your overridden lifecycle
 methods at the right moments.

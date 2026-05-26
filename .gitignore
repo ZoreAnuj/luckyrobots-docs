@@ -6,7 +6,7 @@ __pycache__/
 /site/
 
 # Generated API reference markdown (regenerated from engine source on every build)
-/docs/api/
+/docs/scripting/api/
 
 # .NET build output for the generator tool
 tools/**/bin/

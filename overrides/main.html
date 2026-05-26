@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{#
+  Preload the two primary brand fonts so they're fetched before first paint,
+  eliminating the flash-of-fallback on initial load. `crossorigin` is required
+  on font preloads (font fetches are always CORS-mode) even for same-origin files.
+  The other weights (Aeonik medium, Plex 700) load on demand via @font-face.
+#}
+{% block extrahead %}
+  {{ super() }}
+  <link rel="preload" href="{{ 'assets/fonts/aeonik-regular.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ 'assets/fonts/aeonik-medium.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ 'assets/fonts/ibm-plex-mono-400-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+{% endblock %}
