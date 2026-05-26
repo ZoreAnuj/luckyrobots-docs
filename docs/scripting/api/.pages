@@ -1,0 +1,13 @@
+title: API Reference
+nav:
+  - index.md
+  - scene
+  - components
+  - math
+  - physics
+  - rendering
+  - audio
+  - animation
+  - core
+  - attributes
+  - learn
