@@ -303,6 +303,17 @@ body { font-synthesis: style; }
   color: var(--md-default-bg-color);    /* contrasts the accent fill in both schemes */
 }
 
+/* ---- brand logo ---- */
+/* Inlined SVG logo (overrides/partials/logo.html) — keep its 26:17 aspect
+   ratio instead of Material's default square 1.2rem box. */
+.md-header__button.md-logo .lr-logo,
+.md-nav__title .lr-logo {
+  display: block;
+  width: auto;
+  height: 1.1rem;
+  fill: currentColor;
+}
+
 /* ---- layout polish ---- */
 .md-grid { max-width: 68rem; }
 

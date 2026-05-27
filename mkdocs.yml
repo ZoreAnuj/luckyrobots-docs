@@ -16,7 +16,8 @@ validation:
 
 theme:
   name: material
-  custom_dir: overrides  # adds <link rel=preload> for the brand fonts (see overrides/main.html)
+  custom_dir: overrides  # adds <link rel=preload> for the brand fonts + inlines the brand logo (overrides/partials/logo.html)
+  favicon: assets/favicon.svg
   language: en
   font: false            # use the brand fonts defined in extra.css, not Google's Roboto
   features:
