@@ -20,4 +20,5 @@ Engine fundamentals scripts use every frame: input, logging, timing, application
 | [PerformanceTimers](performancetimers.md) | `static class` |  |
 | [Timer](timer.md) | `static class` |  |
 | [Timer.Handle](timer-handle.md) | `struct` |  |
+| [TimeSync](timesync.md) | `static class` |  |
 | [UUID](uuid.md) | `struct` |  |

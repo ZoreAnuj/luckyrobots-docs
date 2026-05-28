@@ -3,3 +3,5 @@ nav:
   - index.md
   - entity-lifecycle.md
   - working-with-components.md
+  - time-runners.md
+  - editor-attributes.md

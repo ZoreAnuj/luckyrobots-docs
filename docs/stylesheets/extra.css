@@ -324,3 +324,201 @@ body { font-synthesis: style; }
 
 .md-typeset .grid.cards > :is(ul, ol) > li,
 .md-typeset .grid > .card { border-radius: 0.4rem; }
+
+/* Vertically centre inline icons used at the start of card titles.
+   Material's default vertical-align sits the icon above the text baseline;
+   `.middle` over-corrects below it. -0.225em lands the icon optically centred
+   with bold text. */
+.md-typeset .grid.cards .twemoji {
+  vertical-align: -0.225em;
+}
+
+/* ─── Inspector mock widgets (Editor Attributes guide) ─────────────────── */
+/* Visual approximations of the engine's Inspector field renderings. Used in
+   docs/scripting/getting-started/editor-attributes.md to show what each
+   attribute produces. Not a pixel-perfect copy of the editor. */
+
+.md-typeset .inspector-mock {
+  background: #1c1d22;
+  border: 1px solid #2a2b30;
+  border-radius: 4px;
+  padding: 10px 14px;
+  margin: 0.75em 0 1.25em;
+  font-family: var(--md-text-font);
+  font-size: 0.85em;
+  color: #c8c9cd;
+  max-width: 480px;
+}
+
+.md-typeset .inspector-mock .field {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 0;
+}
+
+.md-typeset .inspector-mock .label {
+  flex: 0 0 140px;
+  color: #969799;
+}
+
+.md-typeset .inspector-mock .control {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.md-typeset .inspector-mock .number {
+  background: #2a2b32;
+  padding: 5px 10px;
+  border-radius: 3px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.md-typeset .inspector-mock .slider {
+  position: relative;
+  height: 22px;
+  background: #2a2b32;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.md-typeset .inspector-mock .slider-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(180deg, #5a5c66, #44464f);
+}
+.md-typeset .inspector-mock .slider-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  font-variant-numeric: tabular-nums;
+  color: #d7d8db;
+}
+
+.md-typeset .inspector-mock .toggle {
+  display: block;
+  width: 100%;
+  padding: 7px 0;
+  text-align: center;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 0.85em;
+}
+.md-typeset .inspector-mock .toggle.on  { background: #f5503d; color: #fff; }
+.md-typeset .inspector-mock .toggle.off { background: #2a2b32; color: #969799; }
+
+.md-typeset .inspector-mock .button {
+  display: inline-block;
+  padding: 6px 16px;
+  background: #f5503d;
+  color: #fff;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 0.85em;
+}
+
+.md-typeset .inspector-mock .dropdown {
+  background: #2a2b32;
+  padding: 5px 12px;
+  border-radius: 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.md-typeset .inspector-mock .dropdown::after { content: "▾"; color: #969799; }
+
+.md-typeset .inspector-mock .color {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.md-typeset .inspector-mock .color-swatch {
+  width: 32px;
+  height: 22px;
+  border: 1px solid #44464f;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+.md-typeset .inspector-mock .color-rgb {
+  font-variant-numeric: tabular-nums;
+  color: #969799;
+  font-size: 0.85em;
+}
+
+.md-typeset .inspector-mock .multiline {
+  background: #2a2b32;
+  padding: 6px 10px;
+  border-radius: 3px;
+  min-height: 64px;
+  color: #969799;
+  font-style: italic;
+}
+
+.md-typeset .inspector-mock .group {
+  background: #25262c;
+  padding: 8px 12px;
+  border-radius: 3px;
+  font-weight: 600;
+  border: 1px solid #2a2b30;
+  margin: 0 -4px 6px;
+}
+.md-typeset .inspector-mock .group::before { content: "▾ "; color: #969799; }
+
+.md-typeset .inspector-mock .header-text {
+  font-size: 0.78em;
+  color: #969799;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 6px 0 2px;
+}
+
+.md-typeset .inspector-mock .divider {
+  height: 1px;
+  background: #2a2b30;
+  margin: 8px 0;
+}
+
+.md-typeset .inspector-mock .units {
+  color: #74757a;
+  margin-left: 4px;
+  font-size: 0.85em;
+  font-weight: normal;
+}
+
+.md-typeset .inspector-mock-tooltip {
+  background: #0f1014;
+  color: #d7d8db;
+  padding: 8px 12px;
+  border-radius: 3px;
+  font-size: 0.85em;
+  border: 1px solid #2a2b30;
+  max-width: 280px;
+  margin-top: 6px;
+  display: inline-block;
+  font-family: var(--md-text-font);
+}
+.md-typeset .inspector-mock-tooltip::before {
+  content: "💡  ";
+  margin-right: 2px;
+}
+
+.md-typeset .inspector-mock .field.disabled { opacity: 0.45; }
+
+.md-typeset .inspector-mock-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0.75em 0 1.25em;
+}
+.md-typeset .inspector-mock-pair .inspector-mock { margin: 0; max-width: none; }
+.md-typeset .inspector-mock-state {
+  font-size: 0.72em;
+  color: #969799;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+  font-weight: 600;
+}

@@ -49,7 +49,7 @@ Animation sequences and playback.
 
 Engine fundamentals scripts use every frame: input, logging, timing, application state, and assets.
 
-*17 types*
+*18 types*
 
 ## [Editor Attributes](attributes/index.md)
 

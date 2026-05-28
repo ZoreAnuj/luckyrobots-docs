@@ -1,0 +1,222 @@
+# Recording with the Observer
+
+The Observer is the engine's data-recording system. It captures robot state, actions,
+contact events, and camera frames during a simulation run, and writes them to disk as a
+structured dataset (Parquet by default, with video files alongside). Scripts drive the
+recording lifecycle through `Hazel.Data.Observer`, a small static API.
+
+!!! abstract "In short"
+    Call `Observer.StartRecording()` to begin a session, `Observer.EndCurrentEpisode(success)`
+    to close an episode (a new one starts automatically), and `Observer.StopRecording()`
+    when you are done. Everything else is configured in the scene's Recorder settings.
+
+## The session lifecycle
+
+A recording is organised as one **session** containing one or more **episodes**. The
+session writes everything into a single `DataSessions/<timestamp>/` folder. Each episode
+is one trajectory within that session.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Recording : StartRecording
+    Recording --> Recording : EndCurrentEpisode
+    Recording --> Idle : StopRecording
+```
+
+`StartRecording()` opens the session and starts the first episode. From there, every
+`EndCurrentEpisode(success)` closes the current trajectory and the next one begins on the
+next step. Either `StopRecording()` or hitting the configured `TotalEpisodes` target
+returns the session to idle.
+
+## The Observer API
+
+Every member is static on `Hazel.Data.Observer`:
+
+| Member | What it does |
+|--------|--------------|
+| `StartRecording()` | Opens a session. Authenticates to LuckyHub, creates the `DataSessions/<timestamp>/` folder, and begins the first episode. Blocks briefly while authenticating. |
+| `StopRecording()` | Closes the session. Flushes buffered frames, finalises the video encoders, and submits episode metadata to LuckyHub. |
+| `IsRecording` | `true` while a session is open. |
+| `BeginEpisode()` | Starts a new episode within an active session. Rarely called directly; episodes auto-start after `EndCurrentEpisode`. |
+| `EndCurrentEpisode(bool success)` | Closes the current episode. If `success` is `false` and `EnableDiscardFailedEpisodes` is set in the scene settings, the episode is moved to a `.failed/` folder instead of being kept. |
+| `EndCurrentEpisodeBeginNext(bool success)` | Closes the current episode and opens the next in one call. Equivalent to `EndCurrentEpisode` followed by `BeginEpisode`. |
+| `RegisterTask(int index, string description)` | Declares a sub-task label. Call once per task type at startup. |
+| `SetCurrentTaskIndex(int index)` | Sets which registered task is currently running. Every recorded frame from this call onward is tagged with the task index. |
+
+## Common patterns
+
+### Bracket a single task
+
+The simplest pattern: start recording when the task begins, stop when it finishes. Useful
+when one script orchestrates a single trajectory.
+
+```csharp
+using Hazel;
+using Hazel.Data;
+
+public class TaskRecorder : Entity
+{
+    [Button("Start recording")]
+    public void Start()
+    {
+        Observer.StartRecording();
+        Log.Info("Recording started");
+    }
+
+    [Button("End episode (success)")]
+    public void Succeed()
+    {
+        Observer.EndCurrentEpisode(true);
+    }
+
+    [Button("End episode (failure)")]
+    public void Fail()
+    {
+        Observer.EndCurrentEpisode(false);
+    }
+
+    [Button("Stop recording")]
+    public void Stop()
+    {
+        Observer.StopRecording();
+        Log.Info("Recording stopped");
+    }
+}
+```
+
+The `[Button]` attributes make each call clickable from the Inspector at runtime, which
+is the quickest way to drive recording from a controller script during scene testing.
+
+### Run a batch of episodes
+
+For data collection, scripts usually start the session once, then mark episode boundaries
+as the simulator resets between trajectories.
+
+```csharp
+using Hazel;
+using Hazel.Data;
+
+public class EpisodeRunner : Entity
+{
+    [Tooltip("How many episodes to record before stopping.")]
+    public int EpisodeCount = 100;
+
+    private int m_Completed = 0;
+
+    protected override void OnCreate()
+    {
+        if (!Observer.IsRecording)
+            Observer.StartRecording();
+    }
+
+    // Call this from the task logic when an episode finishes.
+    public void OnEpisodeFinished(bool success)
+    {
+        Observer.EndCurrentEpisode(success);
+        m_Completed += 1;
+
+        if (m_Completed >= EpisodeCount)
+            Observer.StopRecording();
+    }
+}
+```
+
+The `if (!Observer.IsRecording)` guard is the recommended pattern for scripts that may be
+attached to a scene that was reset mid-session. It avoids opening a second session when
+one is already running.
+
+### Label sub-tasks within an episode
+
+For episodes with multiple phases (approach, grasp, place), register a task per phase at
+startup and switch index as the phase changes. Every recorded frame is tagged with the
+current task index, so downstream tooling can slice the dataset by phase.
+
+```csharp
+using Hazel;
+using Hazel.Data;
+
+public class PickAndPlaceLabeller : Entity
+{
+    private const int k_TaskApproach = 0;
+    private const int k_TaskGrasp    = 1;
+    private const int k_TaskPlace    = 2;
+
+    protected override void OnCreate()
+    {
+        Observer.RegisterTask(k_TaskApproach, "approach");
+        Observer.RegisterTask(k_TaskGrasp,    "grasp");
+        Observer.RegisterTask(k_TaskPlace,    "place");
+
+        Observer.SetCurrentTaskIndex(k_TaskApproach);
+    }
+
+    // Call as the task graph transitions between phases.
+    public void EnterGraspPhase() => Observer.SetCurrentTaskIndex(k_TaskGrasp);
+    public void EnterPlacePhase() => Observer.SetCurrentTaskIndex(k_TaskPlace);
+}
+```
+
+## What gets recorded
+
+Three recorder modes capture different sets of state. The mode is set on the scene's
+Recorder settings page, not from script.
+
+<div class="grid cards" markdown>
+
+-   :material-robot-industrial: **Robot Arm**
+
+    Joint angles, gripper state, end-effector pose, and contact forces. The default mode
+    for single-arm manipulation tasks (Piper, SO100, OpenArm).
+
+-   :material-robot: **MuJoCo Full Scene**
+
+    Every MuJoCo body, joint, contact, and actuator in the scene. Use for whole-body
+    humanoid work (G1) and multi-agent scenarios.
+
+-   :material-quadcopter: **Drone**
+
+    Position, orientation, rotor speeds, and IMU readings. For quadrotor and aerial
+    tasks.
+
+</div>
+
+Alongside the state stream, the Recorder page configures the **camera bindings**:
+which scene cameras record video, at what resolution, and to which output names.
+Optional semantic-segmentation masks ride alongside the colour frames when enabled.
+
+## Output
+
+A session writes one folder under `DataSessions/`:
+
+```
+DataSessions/session_<timestamp>/
+├── meta/        info.json, stats.json, tasks.parquet, episode metadata
+├── data/        per-episode state and action frames (.parquet)
+└── videos/      one folder per camera, encoded video files
+```
+
+The frame schema is standardised across modes. Every frame carries `episode_index`,
+`frame_index`, `timestamp`, `task_index`, and the action and observation vectors for the
+configured mode.
+
+## Caveats
+
+!!! warning "Things to know"
+    - **Recording does not start automatically.** A script must call
+      `Observer.StartRecording()`. Nothing is captured before that.
+    - **The scene's Recorder must be enabled.** If the Recorder runner is disabled in
+      scene settings, `StartRecording()` quietly bails out.
+    - **`StartRecording()` blocks briefly** while authenticating with LuckyHub and
+      creating a remote task entry. Expect tens to hundreds of milliseconds.
+    - **Recording pauses when the simulation pauses.** Pausing the engine stops the
+      recorder; unpausing resumes it. The current episode stays open across the pause.
+    - **Episodes auto-advance.** After `EndCurrentEpisode`, the next episode begins on
+      the next step without a `BeginEpisode` call. To stop, call `StopRecording`.
+    - **Hitting `TotalEpisodes` stops the session automatically.** The configured target
+      is a hard cap; the session returns to idle once it is reached.
+
+!!! tip "Where to configure the rest"
+    Output directory, recorder mode, total episode count, max episode duration, camera
+    bindings, codec and resolution all live in the scene's **Recorder** settings page,
+    not in script. Scripts drive the lifecycle; the scene defines what to capture.
