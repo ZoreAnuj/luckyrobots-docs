@@ -19,15 +19,30 @@ is one trajectory within that session.
 ```mermaid
 stateDiagram-v2
     [*] --> Idle
+
     Idle --> Recording : StartRecording
-    Recording --> Recording : EndCurrentEpisode
     Recording --> Idle : StopRecording
+
+    state Recording {
+        [*] --> InEpisode
+        InEpisode --> BetweenEpisodes : EndCurrentEpisode
+        BetweenEpisodes --> InEpisode : BeginEpisode
+    }
 ```
 
-`StartRecording()` opens the session and starts the first episode. From there, every
-`EndCurrentEpisode(success)` closes the current trajectory and the next one begins on the
-next step. Either `StopRecording()` or hitting the configured `TotalEpisodes` target
-returns the session to idle.
+`StartRecording()` opens the session and the first episode in one call.
+`EndCurrentEpisode(success)` closes the current trajectory; in normal use the session
+immediately starts the next one on the following step. `BeginEpisode()` opens the next
+episode explicitly after a manual end. `StopRecording()`, or hitting the configured
+`TotalEpisodes` target, returns the session to Idle.
+
+`Observer.IsRecording` is `true` for the whole **Recording** state, in or between
+episodes, and `false` in **Idle**.
+
+!!! note "`EndCurrentEpisodeBeginNext(success)`"
+    Atomic shortcut: ends the current episode and begins the next one in one call. Leaves
+    the diagram unchanged (no detour through **BetweenEpisodes**), so it is the cleanest
+    way to mark an episode boundary when the script does not want the brief gap.
 
 ## The Observer API
 

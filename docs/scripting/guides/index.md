@@ -5,13 +5,25 @@ Task-focused walkthroughs. For the exhaustive type-by-type listing, see the
 
 <div class="grid cards" markdown>
 
--   :material-keyboard: **[Input & controls](input.md)**
+-   :material-keyboard: **[Input & Controls](input.md)**
 
-    Keyboard, mouse, and controller polling with [`Input`](../api/core/input.md).
+    Keyboard, mouse, and controller polling with [`Input`](../api/core/input.md). Common
+    bindings for recording control and robot driving.
 
--   :material-robot: **[Robots & MDP tasks](robots-and-mdp.md)**
+-   :material-robot: **[Controlling robots](controlling-robots.md)**
 
-    Author robot agents and reinforcement-learning tasks with the MDP component model.
+    Driving trained policies, switching between them, partitioning joints, and setting
+    motion-graph IK targets. Worked through with a G1 humanoid carrying walker, rotator,
+    and arm IK.
+
+-   :material-record-rec: **[Recording with the Observer](recording.md)**
+
+    Start and stop recording, manage episodes, and tag sub-tasks with the Observer API.
+
+-   :material-tune: **[Deterministic recording with sync points](recording-advanced.md)**
+
+    Lock episode boundaries to a configurable drumbeat for regression tests and
+    determinism proofs.
 
 </div>
 

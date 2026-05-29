@@ -226,8 +226,8 @@ Each stage transition fires on the exact sync tick that is `N` drumbeats after t
 previous stage's start. The gap between reset and the next cycle's first recorded frame
 is the same every iteration. No `ts` accumulation, no rounding drift.
 
-This is the pattern Cup Cleaner uses to chain quiet wait → MuJoCo reset → settle wait →
-re-enqueue the cycle, so every cycle iteration's frame 0 lands on the same beat.
+The pattern fits chained reset cycles (quiet wait → MuJoCo reset → settle wait →
+re-enqueue) where every iteration's frame 0 must land on the same beat.
 
 ## Pattern: trigger N runner steps after a sync
 

@@ -2,6 +2,6 @@ title: Guides
 nav:
   - index.md
   - input.md
-  - robots-and-mdp.md
+  - controlling-robots.md
   - recording.md
   - recording-advanced.md

@@ -2,6 +2,8 @@ nav:
   - Lucky Engine:
     - index.md
     - viewport-navigation.md
+    - units.md
+    - robots.md
     - time-manager.md
   - scripting
   # Future engine sections become top-level folders here — each one its own tab

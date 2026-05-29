@@ -178,9 +178,9 @@ The Mujoco component family includes `MujocoBodyComponent`, `MujocoGeomComponent
 
 !!! tip "Real examples"
     The ContentVault projects under `UnitreeG1`, `UnitreeGo2`, `Piper`,
-    `PiperPatternStacking`, `CupCleaner`, and `SO100PickAndPlace` are all Mujoco-driven
-    robotics setups. They are good references for how a real scene composes Mujoco
-    bodies, colliders, joints, policy slots, and motion-graph IK targets.
+    `PiperPatternStacking`, and `SO100PickAndPlace` are all Mujoco-driven robotics
+    setups. They are good references for how a real scene composes Mujoco bodies,
+    colliders, joints, policy slots, and motion-graph IK targets.
 
 ### Jolt rigid bodies (game-style 3D)
 

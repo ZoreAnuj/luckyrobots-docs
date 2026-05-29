@@ -28,6 +28,16 @@ the version selector in the header to switch between engine releases (e.g. `2026
     The three camera modes (fly, orbit, default), the keyboard shortcuts for switching
     transform gizmos, and the conflicts between movement and tool keys.
 
+-   :material-ruler: **[Units](units.md)**
+
+    SI units throughout: metres, seconds, kilograms, Newtons. Radians in the script API,
+    degrees in the Inspector. Where each quantity shows up and how to label fields.
+
+-   :material-robot: **[Robots](robots.md)**
+
+    What ships with the engine, what's in the Content Vault, the shape of a robot pack,
+    and how to bring in your own MJCF or a MuJoCo Menagerie model.
+
 </div>
 
 ## More sections coming
