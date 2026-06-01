@@ -121,8 +121,7 @@ public class EpisodeRunner : Entity
 
     protected override void OnCreate()
     {
-        if (!Observer.IsRecording)
-            Observer.StartRecording();
+        Observer.StartRecording();
     }
 
     // Call this from the task logic when an episode finishes.
@@ -137,9 +136,13 @@ public class EpisodeRunner : Entity
 }
 ```
 
-The `if (!Observer.IsRecording)` guard is the recommended pattern for scripts that may be
-attached to a scene that was reset mid-session. It avoids opening a second session when
-one is already running.
+!!! note "Scene-level episode cap"
+    The scene itself has a **Total Episodes** setting that defaults to **300** and is
+    enforced by the recorder. Once `CurrentEpisodeIndex` reaches it the Observer
+    stops the session on its own, even if the script's own `EpisodeCount` is higher.
+    To record more than 300, raise it in **Settings → Data → Session → Episodes →
+    Total Episodes** (the slider goes up to 1000). Setting it to `0` disables the cap
+    entirely, leaving only the script's `StopRecording()` to end the session.
 
 ### Label sub-tasks within an episode
 

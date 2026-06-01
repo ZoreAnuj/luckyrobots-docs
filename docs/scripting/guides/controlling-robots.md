@@ -2,38 +2,13 @@
 
 `RobotControllerComponent` is where robot control lives. It hosts two control surfaces in
 one component: a list of **policy slots** that bind trained policies to the robot, and a
-single **motion graph** that drives IK targets. Most real scenes combine both — a policy
+single **motion graph** that drives IK targets. Most real scenes combine both: a policy
 drives the lower body, IK drives an arm, and a joint-ownership mask keeps them out of
 each other's way.
 
 The worked example throughout this page is a G1 humanoid carrying multiple policies
 and an arm IK chain: a walker policy for gait, a rotator policy for clean turn-in-place,
 and motion-graph IK for arm reach and grasp.
-
-## The two API surfaces
-
-| Surface | Type | Use for |
-|---------|------|---------|
-| `RobotControllerComponent` | The engine component | Motion-graph inputs (`SetInputVector3`, `SetInputTrigger`), and the raw `uint` policy API |
-| `RobotController` | Typed struct wrapper, implicit conversion from the component | Policy commands with named enums (`SetPolicyActive`, `SetFloat`, `SetDrivenJoints`) |
-
-A typical setup caches one of each in `OnCreate`:
-
-```csharp
-private RobotControllerComponent? m_Rcc;
-private RobotController           m_Robot;
-
-protected override void OnCreate()
-{
-    m_Rcc = GetComponent<RobotControllerComponent>();
-    if (m_Rcc is null)
-        return;
-    m_Robot = m_Rcc;   // implicit RobotControllerComponent -> RobotController
-}
-```
-
-The two fields look at the same underlying component. `m_Rcc` is used for motion-graph
-inputs, `m_Robot` for typed policy commands.
 
 ## Activating and driving a policy
 
@@ -47,7 +22,7 @@ using Hazel;
 public class WalkerDriver : Entity
 {
     private RobotControllerComponent? m_Rcc;
-    private RobotController           m_Robot;
+    private RobotController           m_Robot;   // typed wrapper, implicit from m_Rcc
 
     protected override void OnCreate()
     {
@@ -71,37 +46,121 @@ public class WalkerDriver : Entity
 }
 ```
 
-The raw `uint` form `m_Rcc.SetFloat(slotId, commandId, value)` is still there for code
-that hasn't picked up the generated enums yet. New code should prefer the typed form.
+`RobotController` is a thin wrapper struct that adds enum-typed overloads of the
+policy commands and converts implicitly from `RobotControllerComponent`, so caching
+it alongside `m_Rcc` keeps every policy call site readable. The component still
+exposes the raw `uint` form `m_Rcc.SetFloat(slotId, commandId, value)` for code
+that hasn't picked up the generated enums yet, and it remains the entry point for
+motion-graph inputs and policy setup further down this page.
 
 ## Switching between policies
 
 A robot can carry several trained policies and swap between them. The walker handles
 gait; the rotator is trained to turn cleanly in place from a standstill, which the
-walker is not. A turn-to-face routine deactivates the walker, activates the rotator,
-sends a yaw-rate command, then swaps back when the heading is aligned:
+walker is not. A turn-to-face routine has to bring the body to a halt with the walker,
+hand control to the rotator, wait until the heading is aligned, damp residual rotation,
+then hand control back. It cannot collapse to a single-frame swap, because
+`SetPolicyActive(slotId, false)` only flips a flag and reaps the slot's policy
+runtime: it does not clear the body's velocity in the underlying physics state, and
+the engine carries no observation history that an incoming policy could replay. If
+the rotator activates while the body still has forward velocity, its first
+observation falls outside the standstill distribution it was trained on and it
+stumbles. The walker has to physically decelerate the body across several ticks
+before the swap happens.
+
+The handoff is therefore a small state machine spanning multiple ticks of the Robot
+runner (50 Hz by default, so each tick is 20 ms):
 
 ```csharp
-// Walker -> Rotator handoff
-m_Robot.SetFloat(PolicyIds.Walker, WalkerCommands.SetVx,      0.0f);
-m_Robot.SetFloat(PolicyIds.Walker, WalkerCommands.SetYawRate, 0.0f);
-m_Robot.SetPolicyActive(PolicyIds.Walker,  false);
-m_Robot.SetPolicyActive(PolicyIds.Rotator, true);
-m_Robot.SetFloat(PolicyIds.Rotator, RotatorCommands.SetYawRate, yawRate);
+public class TurnToFace : Entity
+{
+    private enum Phase { Walking, DecelBody, Rotating, DampRotation }
 
-// Rotator -> Walker handoff (after the target heading is reached)
-m_Robot.SetFloat(PolicyIds.Rotator, RotatorCommands.SetYawRate, 0.0f);
-m_Robot.SetPolicyActive(PolicyIds.Rotator, false);
-m_Robot.SetPolicyActive(PolicyIds.Walker,  true);
+    private const int k_DecelTicks = 6;   // walker brings body to a standstill
+    private const int k_DampTicks  = 4;   // rotator damps residual rotation
+
+    private RobotControllerComponent? m_Rcc;
+    private RobotController           m_Robot;
+
+    private Phase m_Phase          = Phase.Walking;
+    private int   m_TicksInPhase   = 0;
+    private float m_DesiredYawRate = 0.0f;
+
+    protected override void OnCreate()
+    {
+        m_Rcc = GetComponent<RobotControllerComponent>();
+        if (m_Rcc is null)
+            return;
+        m_Robot = m_Rcc;
+        m_Robot.SetPolicyActive(PolicyIds.Walker, true);
+    }
+
+    // Called by a navigation script when a heading change is needed.
+    public void RequestTurn(float yawRate)
+    {
+        m_DesiredYawRate = yawRate;
+        m_Robot.SetFloat(PolicyIds.Walker, WalkerCommands.SetVx,      0.0f);
+        m_Robot.SetFloat(PolicyIds.Walker, WalkerCommands.SetVy,      0.0f);
+        m_Robot.SetFloat(PolicyIds.Walker, WalkerCommands.SetYawRate, 0.0f);
+        m_Phase        = Phase.DecelBody;
+        m_TicksInPhase = 0;
+    }
+
+    protected override void OnUpdate(float ts)
+    {
+        if (m_Rcc is null)
+            return;
+        m_TicksInPhase++;
+
+        switch (m_Phase)
+        {
+            case Phase.DecelBody:
+                // Walker is still active and commanding zero velocity; the body
+                // bleeds off forward speed across these ticks.
+                if (m_TicksInPhase >= k_DecelTicks)
+                {
+                    m_Robot.SetPolicyActive(PolicyIds.Walker,  false);
+                    m_Robot.SetPolicyActive(PolicyIds.Rotator, true);
+                    m_Robot.SetFloat(PolicyIds.Rotator, RotatorCommands.SetYawRate, m_DesiredYawRate);
+                    m_Phase        = Phase.Rotating;
+                    m_TicksInPhase = 0;
+                }
+                break;
+
+            case Phase.Rotating:
+                if (HeadingAligned())
+                {
+                    m_Robot.SetFloat(PolicyIds.Rotator, RotatorCommands.SetYawRate, 0.0f);
+                    m_Phase        = Phase.DampRotation;
+                    m_TicksInPhase = 0;
+                }
+                break;
+
+            case Phase.DampRotation:
+                if (m_TicksInPhase >= k_DampTicks)
+                {
+                    m_Robot.SetPolicyActive(PolicyIds.Rotator, false);
+                    m_Robot.SetPolicyActive(PolicyIds.Walker,  true);
+                    m_Phase = Phase.Walking;
+                }
+                break;
+        }
+    }
+
+    private bool HeadingAligned() => /* compare current heading to target */ true;
+}
 ```
 
-!!! tip "Two things to know about handoffs"
-    - **Zero the outgoing policy's commands first.** Residual command values from the
-      previous slot can still influence the body for a step or two as observation
-      buffers feed forward. `SetFloat(...0)` before the swap gives a clean handoff.
-    - **Let the body settle when the new policy was trained for a standstill start.**
-      The rotator stumbles if asked to take over while the walker still has forward
-      velocity. Zero the walker, wait a tick, then activate the rotator.
+Two things to notice. First, the zero-velocity commands in `RequestTurn` are issued
+while the walker is **still active**, so the walker spends `k_DecelTicks` ticks
+decelerating the body before being deactivated. Issuing the same `SetFloat(...0)`
+calls in the same frame as `SetPolicyActive(walker, false)` would be wasted: the
+walker would never run another inference with those commands, and the slot's
+command store is discarded with the runtime when the slot deactivates. Second, the
+same shape applies in reverse: the rotator zeros its yaw-rate command, runs for
+`k_DampTicks` more ticks to damp any leftover rotation, and only then hands the
+body back to the walker. Tick counts are robot-specific and worth tuning against
+observed deceleration on the target platform.
 
 ## Joint ownership
 
