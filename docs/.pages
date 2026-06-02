@@ -3,6 +3,7 @@ nav:
     - index.md
     - whats-new.md
     - get-started.md
+    - editor-interface.md
     - viewport-navigation.md
     - units.md
     - assets.md

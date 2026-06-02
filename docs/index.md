@@ -18,6 +18,11 @@ the version selector in the header to switch between engine releases (e.g. `2026
 
     Install Lucky Engine, sign in, run the Welcome scene, and create a first project.
 
+-   :material-view-dashboard-outline: **[Editor Interface](editor-interface.md)**
+
+    The panels and windows: the viewport, Scene Hierarchy, Content Browser, the robotics
+    and recording panels, the menus, and the Simple and Advanced layouts.
+
 -   :material-language-csharp: **[Scripting](scripting/index.md)**
 
     Write C# to drive behavior in your scenes — move entities, respond to input and
