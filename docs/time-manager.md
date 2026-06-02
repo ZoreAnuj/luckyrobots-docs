@@ -127,6 +127,12 @@ graph LR
 This is the cadence at which the engine's sync-point subsystem latches consistent
 snapshots across rates.
 
+!!! note "A familiar analogy"
+    The multi-rate, nanosecond-aligned behaviour matches synchronised clock domains in
+    digital hardware: several clocks derived from one base clock realign at their common
+    beat and advance edge to edge. A multi-rate fixed-step solver, such as Simulink,
+    schedules different sample rates on a shared base step the same way.
+
 ## The step context
 
 Every callback receives a `StepContext` with three pieces of information:

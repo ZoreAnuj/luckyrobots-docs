@@ -4,9 +4,10 @@ This page lists the highlights of each Lucky Engine release. Lucky Engine **2026
 the first public release.
 
 !!! abstract "In short"
-    Lucky Engine 2026.1 is the first public release: a MuJoCo-based robotics simulation
-    editor with C# scripting, trained-policy and IK robot control, data recording, and a
-    gRPC API for driving simulations from code.
+    Lucky Engine 2026.1 is the first public release: a deterministic robotics simulation
+    and data-generation tool with internal C# scripting, trained-policy support, and a
+    gRPC API to drive the simulation from external code for reinforcement-learning
+    training and live policy inference.
 
 ## 2026.1
 
@@ -14,25 +15,27 @@ The first public release.
 
 **Simulation**
 
-- Deterministic fixed-timestep simulation driven by the [Time Manager](time-manager.md),
-  with real-time, deterministic, and fast modes.
+- Deterministic simulation driven by the [Time Manager](time-manager.md): multiple
+  fixed-rate time runners interleave on a single nanosecond-accurate timeline, and run in
+  real time or faster than real time.
 - MuJoCo physics for robots, with Jolt and Box2D solvers also available.
 
 **Robots and control**
 
-- `RobotControllerComponent` hosts trained policies and a motion graph for IK on one robot,
-  with per-joint ownership between them. See
-  [Controlling robots](scripting/guides/controlling-robots.md).
+- Multiple ways to drive a robot: direct joint states, torques, node-based motion graphs,
+  inverse kinematics, and trained policies, with several policies active on one robot at
+  once. See [Controlling robots](scripting/guides/controlling-robots.md).
 - A [Content Vault](robots.md) of ready-made robots (Franka Panda, AgileX Piper, Enactic
   OpenArm, Unitree Go2, Unitree G1) and
   [example projects](example-projects.md) (Welcome, Cup Cleaner, Piper Pattern Stacking).
+  Any MuJoCo XML (MJCF) model can be imported too.
 
 **Content and data**
 
 - A [Content Browser and asset system](assets.md) for scenes, meshes, materials, MJCF
   models, policies, and motion graphs.
-- Data recording to Parquet datasets through the Observer, covered in
-  [Recording](scripting/guides/recording.md).
+- Data and video recording through the Observer: Parquet datasets and camera video,
+  covered in [Recording](scripting/guides/recording.md).
 
 **Programming**
 
