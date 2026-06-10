@@ -27,7 +27,7 @@ The first public release.
   once. See [Controlling robots](scripting/guides/controlling-robots.md).
 - A [Content Vault](robots.md) of ready-made robots (Franka Panda, AgileX Piper, Enactic
   OpenArm, Unitree Go2, Unitree G1) and
-  [example projects](example-projects.md) (Welcome, Cup Cleaner, Piper Pattern Stacking).
+  [example projects](example-projects.md) (Welcome, Piper Pattern Stacking, Walking Pick and Place).
   Any MuJoCo XML (MJCF) model can be imported too.
 
 **Content and data**

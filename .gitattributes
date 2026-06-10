@@ -10,3 +10,5 @@
 *.ico binary
 *.woff2 binary
 *.woff binary
+*.webm binary
+*.mp4 binary

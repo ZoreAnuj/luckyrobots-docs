@@ -317,6 +317,17 @@ body { font-synthesis: style; }
 /* ---- layout polish ---- */
 .md-grid { max-width: 68rem; }
 
+/* Embedded tutorial videos — responsive, capped width, rounded to match cards. */
+.md-typeset .doc-video {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  margin: 1em 0 1.5em;
+  border-radius: 0.4rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: #000;
+}
+
 .md-typeset h3 + p > code,
 .md-typeset h3 + .highlight { scroll-margin-top: 4rem; }
 
