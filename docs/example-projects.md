@@ -57,10 +57,7 @@ It is one of a family of Piper examples in the Content Vault, alongside pick-and
 block stacking, and unscrew-cap. They share the same robot and differ in the task, which
 makes them useful for comparing how a single arm is scripted across different goals.
 
-<video class="doc-video" controls loop playsinline preload="metadata">
-  <source src="../assets/videos/piper-pattern-stacking.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video>
+<iframe class="doc-video" src="https://www.youtube-nocookie.com/embed/rcNxVd_snUg?cc_load_policy=1&rel=0&vq=hd1080" title="Piper Pattern Stacking Tutorial // Lucky Engine" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Walking Pick and Place
 
@@ -74,10 +71,7 @@ joint-ownership mask keeps them from overwriting each other, is described in
 [Controlling robots: policies and IK](scripting/guides/controlling-robots.md). The
 five-fingered hands make it the richest grasping example in the set.
 
-<video class="doc-video" controls loop playsinline preload="metadata">
-  <source src="../assets/videos/walking-pick-and-place.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video>
+<iframe class="doc-video" src="https://www.youtube-nocookie.com/embed/6Yh42V46-IU?cc_load_policy=1&rel=0&vq=hd1080" title="Walking Pick and Place Tutorial // Lucky Engine" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Opening an example
 

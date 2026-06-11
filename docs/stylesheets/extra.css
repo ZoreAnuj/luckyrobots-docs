@@ -331,6 +331,14 @@ body { font-synthesis: style; }
   background: #000;
 }
 
+/* YouTube embeds share .doc-video's footprint; iframes have no intrinsic
+   height, so fix the ratio instead. Full text-column width (no 720px cap) —
+   YouTube also serves higher quality to larger players. */
+.md-typeset iframe.doc-video {
+  aspect-ratio: 16 / 9;
+  max-width: none;
+}
+
 .md-typeset h3 + p > code,
 .md-typeset h3 + .highlight { scroll-margin-top: 4rem; }
 

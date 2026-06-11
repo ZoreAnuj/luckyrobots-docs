@@ -8,6 +8,12 @@ These docs are organized by engine system. Each section below is self-contained;
 the version selector in the header to switch between engine releases (e.g. `2026.1` ↔
 `2026.2`).
 
+### Get Started with a Tutorial
+
+<iframe class="doc-video" src="https://www.youtube-nocookie.com/embed/rcNxVd_snUg?cc_load_policy=1&rel=0&vq=hd1080" title="Piper Pattern Stacking Tutorial // Lucky Engine" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+See more [example projects and tutorials](example-projects.md).
+
 <div class="grid cards" markdown>
 
 -   :material-new-box: **[What's New](whats-new.md)**
