@@ -21,9 +21,10 @@ theme:
   language: en
   font: false            # use the brand fonts defined in extra.css, not Google's Roboto
   features:
-    - navigation.tabs          # top-level sections become tabs
-    - navigation.tabs.sticky
-    - navigation.sections
+    # No navigation.tabs: every top-level section (Lucky Engine, Scripting) stacks
+    # in one tall scrollable left sidebar — Unreal-style. Make sections collapsible later.
+    - navigation.sections      # render top-level groups as always-expanded section headers
+    - navigation.expand        # expand every nested subsection (API Reference, Guides, …) by default
     - navigation.indexes       # a folder's index.md is its section landing page
     - navigation.top           # back-to-top button
     - navigation.footer
@@ -45,6 +46,7 @@ plugins:
   - awesome-pages   # builds nav from the docs/ tree + .pages files (so the generated API tree needs no hand-maintained nav)
 
 extra:
+  homepage: https://luckyrobots.com   # clicking the header logo returns to the main site
   version:
     provider: mike    # renders the version selector from versions.json on the gh-pages branch
     default: stable   # the alias `/` redirects to (see .github/versions.json); mike set-default keeps it in sync
