@@ -90,6 +90,9 @@ jobs:
         run: git fetch origin gh-pages || echo "gh-pages does not exist yet — first publish"
 
       - name: Publish this version with mike
+        # mike runs `mkdocs build`, so the GA Measurement ID env lives here. It's not a secret.
+        env:
+          GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
         run: |
           set -euo pipefail
           mike deploy --push --update-aliases \

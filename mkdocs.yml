@@ -47,6 +47,10 @@ plugins:
 
 extra:
   homepage: https://luckyrobots.com   # clicking the header logo returns to the main site
+  analytics:
+    provider: google
+    # GA4 Measurement ID for the docs web stream, injected in the production deploy job (see .github/workflows)
+    property: !ENV [GA_MEASUREMENT_ID, ""]
   version:
     provider: mike    # renders the version selector from versions.json on the gh-pages branch
     default: stable   # the alias `/` redirects to (see .github/versions.json); mike set-default keeps it in sync
