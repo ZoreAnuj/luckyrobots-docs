@@ -1,6 +1,6 @@
 # Lucky Engine Scripting
 
-Write C# to drive behavior in your Lucky Engine scenes — move entities, respond to
+Write C# to drive behavior in Lucky Engine scenes: move entities, respond to
 input and collisions, query physics, control robots, and define reinforcement-learning
 tasks.
 
@@ -8,7 +8,7 @@ tasks.
 
 -   :material-rocket-launch: **[Getting started](getting-started/index.md)**
 
-    The scripting model, your first `Entity` script, and the update lifecycle.
+    The scripting model, a first `Entity` script, and the update lifecycle.
 
 -   :material-book-open-variant: **[Guides](guides/index.md)**
 
@@ -23,26 +23,26 @@ tasks.
 ## A first taste
 
 Every script is a class that derives from [`Entity`](api/scene/entity.md). Override the
-lifecycle methods you care about and use the engine APIs from inside them:
+lifecycle methods that matter and call the engine APIs from inside them:
 
 ```csharp
 using Hazel;
 
 public class Spinner : Entity
 {
-    // Public fields appear in the Inspector — see "Editor Attributes" in the reference.
+    // Public fields appear in the Inspector. See "Editor Attributes" in the reference.
     public float DegreesPerSecond = 90.0f;
 
     protected override void OnUpdate(float ts)
     {
-        // ts is the frame delta time, in seconds. Rotation is in radians.
+        // ts is the fixed simulation step, in seconds (0.02 at 50 Hz). Rotation is in radians.
         Rotation += new Vector3(0.0f, DegreesPerSecond * Mathf.Deg2Rad * ts, 0.0f);
     }
 }
 ```
 
 Attach the compiled script to an entity via a **Script** component in the editor, and
-`OnUpdate` runs every frame.
+`OnUpdate` runs every simulation step (50 Hz by default).
 
 ## How these docs are built
 
@@ -53,5 +53,5 @@ hand-written. Use the version selector in the header to switch between engine re
 
 !!! tip "Improving the reference"
     Reference text comes from `///` XML doc comments in the engine source. To improve a
-    description, edit the doc comment on the type or member in `Hazel-ScriptCore` — the
+    description, edit the doc comment on the type or member in `Hazel-ScriptCore`. The
     next docs build picks it up automatically.

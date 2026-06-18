@@ -5,13 +5,13 @@ Auto-generated reference for the **Lucky Engine** C# scripting API
 
 ## [Scene & Entities](scene/index.md)
 
-The scene graph: entities, their lifecycle, and scene-level queries. This is where scripting begins — most scripts derive from `Entity`.
+The scene graph: entities, their lifecycle, and scene-level queries. This is where scripting begins. Most scripts derive from `Entity`.
 
 *12 types*
 
 ## [Components](components/index.md)
 
-Data and behavior you attach to entities (transforms, meshes, lights, cameras, rigid bodies, audio, and more). Retrieved with `GetComponent<T>()`.
+Data and behavior attached to entities (transforms, meshes, lights, cameras, rigid bodies, audio, and more). Retrieved with `GetComponent<T>()`.
 
 *27 types*
 
@@ -53,7 +53,7 @@ Engine fundamentals scripts use every frame: input, logging, timing, application
 
 ## [Editor Attributes](attributes/index.md)
 
-Attributes that control how your script's public fields appear and behave in the editor Inspector (sliders, ranges, tooltips, grouping, conditional visibility).
+Attributes that control how a script's public fields appear and behave in the editor Inspector (sliders, ranges, tooltips, grouping, conditional visibility).
 
 *25 types*
 

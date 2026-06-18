@@ -41,9 +41,9 @@
 
   "categories": [
     { "slug": "scene", "title": "Scene & Entities", "order": 10, "folders": ["Scene"],
-      "summary": "The scene graph: entities, their lifecycle, and scene-level queries. This is where scripting begins — most scripts derive from `Entity`." },
+      "summary": "The scene graph: entities, their lifecycle, and scene-level queries. This is where scripting begins. Most scripts derive from `Entity`." },
     { "slug": "components", "title": "Components", "order": 20, "components": true,
-      "summary": "Data and behavior you attach to entities (transforms, meshes, lights, cameras, rigid bodies, audio, and more). Retrieved with `GetComponent<T>()`." },
+      "summary": "Data and behavior attached to entities (transforms, meshes, lights, cameras, rigid bodies, audio, and more). Retrieved with `GetComponent<T>()`." },
     { "slug": "math", "title": "Math", "order": 30, "folders": ["Math"],
       "summary": "Vectors, quaternions, matrices, and math helpers for transforms, interpolation, and randomness." },
     { "slug": "physics", "title": "Physics", "order": 40, "folders": ["Physics", "Physics2D"],
@@ -57,7 +57,7 @@
     { "slug": "core", "title": "Core & Input", "order": 80, "folders": ["Core", ""],
       "summary": "Engine fundamentals scripts use every frame: input, logging, timing, application state, and assets." },
     { "slug": "attributes", "title": "Editor Attributes", "order": 90, "folders": ["Attributes"],
-      "summary": "Attributes that control how your script's public fields appear and behave in the editor Inspector (sliders, ranges, tooltips, grouping, conditional visibility)." },
+      "summary": "Attributes that control how a script's public fields appear and behave in the editor Inspector (sliders, ranges, tooltips, grouping, conditional visibility)." },
     { "slug": "learn", "title": "Robots & Learning (MDP)", "order": 100, "folders": ["Learn", "Robots"],
       "summary": "APIs for authoring robot agents and reinforcement-learning tasks: the MDP component model (observations, rewards, terminations, randomization), robot controllers, and agent management." }
   ]

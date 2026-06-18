@@ -2,6 +2,8 @@
 
 `class` · namespace `Hazel`
 
+Internal per-policy batching layer owned by RobotManager. Scripts construct a RobotManager, not a RobotEnv.
+
 ```csharp
 public class RobotEnv
 ```
@@ -22,11 +24,15 @@ public RobotEnv(RobotManager manager, float dt, Entity mujocoEntity)
 public void CollectState()
 ```
 
+Engine-driven via RobotManager. Not called from scripts.
+
 ### GetActions() {#m-getactions}
 
 ```csharp
 public void GetActions()
 ```
+
+Engine-driven via RobotManager. Not called from scripts.
 
 ### RegisterAgent(RobotAgent) {#m-registeragent}
 
@@ -51,6 +57,8 @@ public void Setup(RobotManager robotManager, MujocoSceneComponent mujocoScene)
 ```csharp
 public void UpdateCommands()
 ```
+
+Engine-driven via RobotManager. Not called from scripts.
 
 
 ---

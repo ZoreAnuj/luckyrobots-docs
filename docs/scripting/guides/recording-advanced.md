@@ -1,7 +1,8 @@
 # Deterministic recording with sync points
 
-By default, episodes start at slightly different engine steps from run to run, a side
-effect of letting a control loop and a recorder tick at different rates. For general
+By default, episodes start at slightly different engine steps from run to run. This is a side
+effect of a control loop and a recorder ticking at different rates, so their phase offset
+varies. (The stepping itself stays deterministic; only the boundary phase moves.) For general
 training data this is desirable: real-world deployments have the same kind of jitter,
 and learning across that variance produces a more robust policy.
 
@@ -13,27 +14,26 @@ ticks.
 
 !!! abstract "In short"
     Sync points are an opt-in mechanism for locking episode boundaries to a configurable
-    drumbeat. Reach for them when you need determinism between episodes or between batches
-    of episodes. Skip them when you want the recorder's natural timing variance in your
-    training data.
+    drumbeat. Reach for them when determinism is needed between episodes or between batches
+    of episodes. Skip them to keep the recorder's natural timing variance in the training
+    data.
 
 ## When to reach for sync points
 
 Sync points are useful when:
 
-- You want to **prove determinism** by showing that two runs of the same scene produce
-  bit-identical episode data.
-- You are running a **regression test suite** where every episode must start from a
-  known engine state.
-- Your training target requires episodes to start from a fixed phase relationship
-  between runners.
+- **Proving determinism**: two runs of the same scene must produce bit-identical episode
+  data.
+- A **regression test suite** requires every episode to start from a known engine state.
+- A training target requires episodes to start from a fixed phase relationship between
+  runners.
 
 Sync points are usually wrong when:
 
-- You are collecting **general training data**. Real-world deployments have timing
-  jitter between sensors and controllers; letting that variance into the dataset trains
-  a more robust policy.
-- You want the recorder to capture variance in how the control loop behaves across the
+- The task is **general training data**. Real-world deployments have timing jitter
+  between sensors and controllers; letting that variance into the dataset trains a more
+  robust policy.
+- The recorder should capture variance in how the control loop behaves across the
   natural phase offsets of its sensors. Sync points hide that variance by collapsing it
   to a single fixed phase.
 
@@ -57,22 +57,22 @@ when they reach the same beat. Datasets become comparable across runs.
 ## Picking a drumbeat
 
 The Sync runner's frequency expresses a particular pattern of alignment between the
-other runners. The **greatest common divisor** of the rates you want to lock to is the
+other runners. The **greatest common divisor** of the rates being locked together is the
 natural choice: every Sync tick lands on a step where all those runners coincide. For a
 scene running control at 50 Hz and recording at 30 Hz, that is 10 Hz.
 
 Sub-multiples of the GCD give looser patterns that still land on natural alignments.
 5 Hz catches every other alignment, 1 Hz catches every tenth, and so on. The right
-cadence is whichever pattern matches how often you want episodes to lock.
+cadence is whichever pattern matches how often episodes should lock.
 
-Avoid frequencies that are not divisors of the rates you care about. A 7 Hz Sync runner
+Avoid frequencies that are not divisors of the relevant rates. A 7 Hz Sync runner
 against 50 Hz and 30 Hz lands on a different phase of each runner at every tick, which
 defeats the point of using sync to enforce determinism.
 
 ## Scene setup
 
-In the editor's **Time Runners** page, add a runner called **Sync** (or whatever name
-you like) at your chosen drumbeat frequency. On the **Subsystems** page, point
+In the editor's **Time Runners** page, add a runner called **Sync** (any name works) at
+the chosen drumbeat frequency. On the **Subsystems** page, point
 `UpdateSyncPointSystemSettings` to that runner.
 
 The scene's serialised form ends up like this:
@@ -288,8 +288,7 @@ guarantee of sync gating carries through to the in-between work.
 
 ## When to skip sync points entirely
 
-If you are collecting general training data, leave the sync point system disabled. The
-recorder will run at its configured rate, the controller will run at its own, and the
-phase between them will vary slightly across episodes. That variance is what trains a
-robust policy — preserve it. See [Recording with the Observer](recording.md) for the
-default path.
+For general training data, leave the sync point system disabled. The recorder runs at its
+configured rate, the controller runs at its own, and the phase between them varies slightly
+across episodes. That variance is what trains a robust policy, so preserve it. See
+[Recording with the Observer](recording.md) for the default path.

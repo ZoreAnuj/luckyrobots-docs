@@ -41,8 +41,9 @@ Public packs currently in the Vault:
 
 -   :material-robot: **Unitree G1**
 
-    Humanoid biped, available with three-finger and five-finger hand variants. Each
-    ships with a trained walker policy and a rotator policy.
+    Humanoid biped, available with three-finger and five-finger hand variants. The
+    five-finger variant ships trained walker and rotator policies; the base and
+    three-finger variants ship the walker policy.
 
 </div>
 

@@ -2,6 +2,8 @@
 
 `class` · namespace `Hazel`
 
+Holds a RobotAgent's commands (e.g. a target velocity) and resamples them on their own schedule each tick.
+
 ```csharp
 public class CommandManager
 ```

@@ -2,6 +2,8 @@
 
 `abstract class` · namespace `Hazel`
 
+Base class for a robot in the Learn pipeline. Subclass it, declare JointSpec/StateSpec, and implement OnSetup/OnReset/OnState/OnAction; the engine-driven RobotManager calls those each tick.
+
 ```csharp
 public abstract class RobotAgent
 ```

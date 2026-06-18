@@ -8,7 +8,7 @@ recording lifecycle through `Hazel.Data.Observer`, a small static API.
 !!! abstract "In short"
     Call `Observer.StartRecording()` to begin a session, `Observer.EndCurrentEpisode(success)`
     to close an episode (a new one starts automatically), and `Observer.StopRecording()`
-    when you are done. Everything else is configured in the scene's Recorder settings.
+    to finish. Everything else is configured in the scene's Recorder settings.
 
 ## The session lifecycle
 
@@ -202,6 +202,19 @@ Recorder settings page, not from script.
 Alongside the state stream, the Recorder page configures the **camera bindings**:
 which scene cameras record video, at what resolution, and to which output names.
 Optional semantic-segmentation masks ride alongside the colour frames when enabled.
+
+!!! note "The recorder rate is independent of the control loop"
+    The Observer runs on its **own recorder time runner**, at the data and video rates set in
+    the Recorder settings (30 Hz by default). That rate is **decoupled from how fast the
+    simulation is stepped**. Whether a gRPC client is driving the action gate flat out in
+    `DETERMINISTIC_HIGH_PERF` or the scene is just playing on its own, recording happens at
+    the configured rate. Any run can be recorded, at any time, at any rate.
+
+    This is also the difference from the gRPC `Step` API's `camera_requests`: those render a
+    single frame *per step* as a policy **observation**, not a recording (see
+    [gRPC API → Recording vs. observation frames](../../grpc-api.md#recording-vs-observation-frames)).
+    The Observer is what actually **records**. Use it for datasets and video, never the
+    per-step observation frames.
 
 ## Output
 

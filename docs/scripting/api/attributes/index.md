@@ -1,6 +1,6 @@
 # Editor Attributes
 
-Attributes that control how your script's public fields appear and behave in the editor Inspector (sliders, ranges, tooltips, grouping, conditional visibility).
+Attributes that control how a script's public fields appear and behave in the editor Inspector (sliders, ranges, tooltips, grouping, conditional visibility).
 
 | Type | Kind | Summary |
 |------|------|---------|

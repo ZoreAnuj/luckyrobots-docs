@@ -2,7 +2,7 @@
 
 `struct` · namespace `Hazel`
 
-Interfaces for engine-side MDP (Markov Decision Process) components. These interfaces define the contract for observation, reward, termination, randomization, and auxiliary data providers that can be registered in the [`MdpComponentRegistry`](mdpcomponentregistry.md) and discovered by external training frameworks via the GetCapabilityManifest RPC. Design follows TimeManager's pattern: lightweight structs for data, interfaces for behavior, no allocations on the hot path.
+Describes an accepted parameter for an MDP component. Used in capability manifests so training frameworks know what parameters a component accepts and their valid ranges.
 
 ```csharp
 public struct ParamDescriptor
