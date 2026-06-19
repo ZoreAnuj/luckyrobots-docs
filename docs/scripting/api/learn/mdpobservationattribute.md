@@ -2,20 +2,7 @@
 
 `class` · namespace `Hazel`
 
-Attributes for marking user C# script methods as MDP components. Users place C# scripts in RobotSandbox/Assets/Scripts/Source/ and decorate static methods with these attributes. The ScriptEngine discovers them at runtime via [`MdpScriptDiscovery`](mdpscriptdiscovery.md) and registers them in the [`MdpComponentRegistry`](mdpcomponentregistry.md). Example: 
-
-```csharp
-public class CustomRewards
-{
-    [MdpReward("upright_bonus", Description = "Reward for staying upright",
-               Category = "locomotion")]
-    public static float UprightBonus(MdpContext ctx, Dictionary<string, string> parameters)
-    {
-        // ... compute reward from ctx.MujocoScene, ctx.Agent, etc.
-        return value;
-    }
-}
-```
+Marks a static method as an MDP observation component. Method signature: int Compute(MdpContext ctx, Dictionary&lt;string, string&gt; parameters, float[] buffer, int offset)
 
 Inherits `Attribute`
 

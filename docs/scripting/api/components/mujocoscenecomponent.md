@@ -375,7 +375,7 @@ public void ReseedPolicyPDTargets()
 ### ResetToInitialState(bool) {#m-resettoinitialstate}
 
 ```csharp
-public void ResetToInitialState(bool preserveTime = true)
+public void ResetToInitialState(bool preserveTime = false)
 ```
 
 ### SetActuatorGainPrms(uint, float, float) {#m-setactuatorgainprms}

@@ -42,7 +42,10 @@ The first public release.
 - A C# [scripting API](scripting/index.md) for scene behavior, robot control, and
   reinforcement-learning task definition.
 - A [gRPC API](grpc-api.md) for driving simulations from any language, with a Python helper
-  and Gymnasium environments.
+  and Gymnasium environments. It supports reinforcement-learning training and policy inference. A
+  registered robot or agent and the External Action Gate give strict lock-step stepping, where
+  one `Step` advances exactly one sim tick. The post-reset settle window is configurable per
+  scene.
 
 **Platforms**
 

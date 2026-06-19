@@ -2,6 +2,8 @@
 
 `class` · namespace `Hazel`
 
+Owns the per-tick Learn pipeline for a set of RobotAgents. The author surface is setup only. Subclass RobotAgent, construct new RobotManager(numAgents, dt, mujocoEntity, agentFactory), then call Setup(mujocoScene). Call Dispose() on teardown. The engine then drives UpdateCommands/CollectState/GetActions each tick. Scenes do not call those.
+
 Implements `IDisposable`
 
 ```csharp
@@ -32,6 +34,8 @@ public IntPtr NativeHandle { get; }
 public void CollectState()
 ```
 
+Engine-driven. Called each tick at the OnUpdate point to gather observations and publish them for the gRPC Step. A scene does not call it.
+
 ### Dispose() {#m-dispose}
 
 ```csharp
@@ -43,6 +47,8 @@ public void Dispose()
 ```csharp
 public void GetActions()
 ```
+
+Engine-driven. Called on the PreMujocoStep event (post motion-graph, pre-physics) to write the latest external action to mjData.ctrl. A scene does not call it.
 
 ### GetAgent(int) {#m-getagent}
 
@@ -56,6 +62,8 @@ public RobotAgent? GetAgent(int id)
 public void Reset()
 ```
 
+Re-initializes every agent (clears buffers, resamples commands, applies the reset pose). Engine/RPC-driven (for example, after a reset). Not part of the script setup path.
+
 ### Setup(MujocoSceneComponent) {#m-setup}
 
 ```csharp
@@ -67,6 +75,8 @@ public void Setup(MujocoSceneComponent mujocoScene)
 ```csharp
 public void UpdateCommands()
 ```
+
+Engine-driven. Called each tick at the OnUpdate point to step the agent's command generators. A scene does not call it; it only constructs the RobotManager and calls Setup().
 
 
 ---

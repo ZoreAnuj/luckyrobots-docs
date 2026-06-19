@@ -1,6 +1,6 @@
 # Components
 
-Data and behavior you attach to entities (transforms, meshes, lights, cameras, rigid bodies, audio, and more). Retrieved with `GetComponent<T>()`.
+Data and behavior attached to entities (transforms, meshes, lights, cameras, rigid bodies, audio, and more). Retrieved with `GetComponent<T>()`.
 
 | Type | Kind | Summary |
 |------|------|---------|

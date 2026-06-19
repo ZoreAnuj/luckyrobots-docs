@@ -2,6 +2,8 @@
 
 `static class` · namespace `Hazel`
 
+Thread-safe bridge between the engine-driven Learn pipeline and the gRPC services. An external process (for example, a Python RL/IL loop) uses it to drive an external-mode RobotAgent batch. It holds the lock-step action gate, the latest observation/action snapshots, the negotiated task session, and the per-step reward/termination data.
+
 ```csharp
 public static class ExternalAgentRegistry
 ```
@@ -35,6 +37,22 @@ public static bool CommitPendingGroups()
 ```
 
 Merge all pending action groups into the action buffer and signal the gate. Uses DefaultJointPosBuffer as the base for any indices not covered by groups. Called by Step() when action_groups are provided but no flat actions vector.
+
+### EngineDriveExternalAgentActions() {#m-enginedriveexternalagentactions}
+
+`static`
+
+```csharp
+public static void EngineDriveExternalAgentActions()
+```
+
+### EngineDriveExternalAgentUpdate() {#m-enginedriveexternalagentupdate}
+
+`static`
+
+```csharp
+public static void EngineDriveExternalAgentUpdate()
+```
 
 ### GetAgentName(int) {#m-getagentname}
 
@@ -78,7 +96,7 @@ public static System.Collections.Generic.HashSet<int> GetOwnedActuatorIndices()
 public static string GetReadinessDiagnostic()
 ```
 
-Returns a human-readable diagnostic string describing why the external agent batch is not ready, or empty string if ready. Thread-safe — intended for polling from the editor UI and gRPC responses.
+Returns a human-readable diagnostic string describing why the external agent batch is not ready, or empty string if ready. Thread-safe. Intended for polling from the editor UI and gRPC responses.
 
 ### HasGrpcClient() {#m-hasgrpcclient}
 
@@ -138,7 +156,7 @@ public static void NotifyExternalBatchSetupComplete(RobotManager manager)
 public static bool PreloadActionGroup(string groupName, float[] actions, int[] indices)
 ```
 
-Preload actions for a named group. Does NOT trigger a physics step. Multiple groups accumulate until CommitPendingGroups() or a flat TrySetExternalActions() call merges and signals the gate. Thread-safe — called from gRPC handler threads.
+Preload actions for a named group. Does NOT trigger a physics step. Multiple groups accumulate until CommitPendingGroups() or a flat TrySetExternalActions() call merges and signals the gate. Thread-safe. Called from gRPC handler threads.
 
 ### Register(RobotManager, RobotEnv, Entity) {#m-register}
 
@@ -238,12 +256,12 @@ public static bool TrySetExternalActions(IReadOnlyList<float> controls)
 public static void Unregister(RobotManager manager)
 ```
 
-### WaitForFrameAsync(long, CancellationToken, float) {#m-waitforframeasync}
+### WaitForObservation(long, CancellationToken, float) {#m-waitforobservation}
 
 `static`
 
 ```csharp
-public static Task<long> WaitForFrameAsync(long currentFrame, CancellationToken cancellationToken, float timeoutS = 0.1f)
+public static Task<long> WaitForObservation(long currentFrame, CancellationToken cancellationToken, float timeoutS = 0.1f)
 ```
 
 

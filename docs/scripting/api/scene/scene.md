@@ -2,6 +2,8 @@
 
 `class` · namespace `Hazel`
 
+The active simulation scene: its entities, components, and settings. Find entities, read or set the SimulationMode, and drive playback from scripts.
+
 Inherits [`Asset<Scene>`](../core/asset-t.md)
 
 ```csharp
@@ -9,6 +11,26 @@ public sealed class Scene : Asset<Scene>
 ```
 
 ## Properties
+
+### ActionGateSettleSteps {#m-actiongatesettlesteps}
+
+`static`
+
+```csharp
+public static int ActionGateSettleSteps { get; }
+```
+
+Settle ticks after each reset before the External Action Gate re-arms. Configurable per scene in the External Action Gate settings; default 20.
+
+### ControlRunnerHz {#m-controlrunnerhz}
+
+`static`
+
+```csharp
+public static double ControlRunnerHz { get; }
+```
+
+Frequency (Hz) of the time runner the External Action Gate / AgentService.Step advances. One gated Step is exactly 1/this seconds of sim time. 0 if unavailable.
 
 ### SimulationMode {#m-simulationmode}
 
@@ -18,7 +40,7 @@ public sealed class Scene : Asset<Scene>
 public static SimulationMode SimulationMode { get; set; }
 ```
 
-Gets or sets the simulation timing mode. Use [`SimulationMode.Fast`](simulationmode.md#m-fast) for RL training to run faster than real-time.
+Gets or sets the simulation timing mode. Use [`SimulationMode.DeterministicHighPerf`](simulationmode.md#m-deterministichighperf) for RL training to run faster than real-time.
 
 ### TimeScale {#m-timescale}
 

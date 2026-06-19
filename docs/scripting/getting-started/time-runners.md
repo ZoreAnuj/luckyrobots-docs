@@ -101,7 +101,7 @@ The time mode sets how the shared timeline advances relative to the wall clock.
   </thead>
   <tbody>
     <tr style="background: rgba(76, 175, 80, 0.15);">
-      <td><strong>Sim Realtime</strong> (deterministic, capped)</td>
+      <td><strong>Sim Realtime</strong> (deterministic, capped, <em>default</em>)</td>
       <td>Deterministically, never ahead of real time. Slows down rather than skipping steps under load.</td>
       <td>Simulation / Robotics</td>
     </tr>
@@ -119,8 +119,9 @@ The time mode sets how the shared timeline advances relative to the wall clock.
 </table>
 
 !!! tip "Determinism"
-    A deterministic mode produces the same sequence of steps regardless of frame rate,
-    which matters for reproducible simulation and data collection.
+    New scenes start in **Sim Realtime**, a deterministic mode. Runs are therefore reproducible by
+    default. A deterministic mode produces the same sequence of steps regardless of frame rate, which
+    matters for reproducible simulation and data collection.
 
 ## Configuring runners
 
