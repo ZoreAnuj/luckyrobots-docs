@@ -2,6 +2,7 @@ nav:
   - Lucky Engine:
     - index.md
     - whats-new.md
+    - release-notes.md
     - get-started.md
     - editor-interface.md
     - viewport-navigation.md
