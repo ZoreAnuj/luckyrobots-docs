@@ -2,7 +2,7 @@
 
 <div style="background:var(--md-default-bg-color--light);border:1px solid var(--md-default-fg-color--lightest);border-radius:14px;padding:36px 32px 28px;margin:24px 0 32px;">
   <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--md-default-fg-color--light);margin:0 0 14px;text-align:center;">Record in sim &nbsp;·&nbsp; Deploy on real</p>
-  <p style="font-size:clamp(1.4rem,3vw,2rem);font-weight:800;line-height:1.2;text-align:center;margin:0 0 28px;letter-spacing:-0.02em;color:var(--md-default-fg-color);">SO-100 Sim2Real <span style="text-decoration:underline;text-decoration-color:var(--lr-green);text-decoration-thickness:3px;text-underline-offset:5px;">without</span> the Teleop</p>
+  <p style="font-size:clamp(1.1rem,2vw,1.35rem);font-weight:700;line-height:1.3;text-align:center;margin:0 0 28px;letter-spacing:-0.01em;color:var(--md-default-fg-color);">SO-100 Sim2Real <span style="text-decoration:underline;text-decoration-color:var(--md-default-fg-color--light);text-decoration-thickness:2px;text-underline-offset:4px;">without</span> the Teleop</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
     <figure style="margin:0;border-radius:10px;overflow:hidden;border:1px solid var(--md-default-fg-color--lightest);">
       <video autoplay muted loop playsinline preload="metadata" style="display:block;width:100%;background:#000;" src="https://zoreanuj.github.io/lerobot-luckyengine-tutorial/videos/hero_teleop.mp4"></video>
