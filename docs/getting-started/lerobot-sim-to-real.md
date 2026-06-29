@@ -1,20 +1,20 @@
 # LeRobot: Sim-to-Real Tutorial
 
-<div style="background:linear-gradient(160deg,rgba(236,158,36,0.08) 0%,rgba(255,255,255,0.02) 100%);border:1px solid rgba(236,158,36,0.2);border-radius:14px;padding:36px 32px 28px;margin:24px 0 32px;">
+<div style="background:var(--md-default-bg-color--light);border:1px solid var(--md-default-fg-color--lightest);border-radius:14px;padding:36px 32px 28px;margin:24px 0 32px;">
   <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--md-default-fg-color--light);margin:0 0 14px;text-align:center;">Record in sim &nbsp;·&nbsp; Deploy on real</p>
-  <p style="font-size:clamp(1.4rem,3vw,2rem);font-weight:800;line-height:1.2;text-align:center;margin:0 0 28px;letter-spacing:-0.02em;">SO-100 Sim2Real <span style="text-decoration:underline;text-decoration-color:var(--lr-green);text-decoration-thickness:3px;text-underline-offset:5px;">without</span> the Teleop</p>
+  <p style="font-size:clamp(1.4rem,3vw,2rem);font-weight:800;line-height:1.2;text-align:center;margin:0 0 28px;letter-spacing:-0.02em;color:var(--md-default-fg-color);">SO-100 Sim2Real <span style="text-decoration:underline;text-decoration-color:var(--lr-green);text-decoration-thickness:3px;text-underline-offset:5px;">without</span> the Teleop</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
-    <figure style="margin:0;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);">
+    <figure style="margin:0;border-radius:10px;overflow:hidden;border:1px solid var(--md-default-fg-color--lightest);">
       <video autoplay muted loop playsinline preload="metadata" style="display:block;width:100%;background:#000;" src="https://zoreanuj.github.io/lerobot-luckyengine-tutorial/videos/hero_teleop.mp4"></video>
-      <figcaption style="padding:10px 14px 12px;font-size:0.85rem;text-align:center;background:rgba(255,255,255,0.03);"><strong>Manual leader-arm teleop.</strong><br><span style="color:var(--md-default-fg-color--light);">One human, one demo at a time.</span></figcaption>
+      <figcaption style="padding:10px 14px 12px;font-size:0.85rem;text-align:center;color:var(--md-default-fg-color);"><strong>Manual leader-arm teleop.</strong><br><span style="color:var(--md-default-fg-color--light);">One human, one demo at a time.</span></figcaption>
     </figure>
-    <figure style="margin:0;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);">
+    <figure style="margin:0;border-radius:10px;overflow:hidden;border:1px solid var(--md-default-fg-color--lightest);">
       <video autoplay muted loop playsinline preload="metadata" style="display:block;width:100%;background:#000;" src="https://zoreanuj.github.io/lerobot-luckyengine-tutorial/videos/hero_sim.mp4"></video>
-      <figcaption style="padding:10px 14px 12px;font-size:0.85rem;text-align:center;background:rgba(255,255,255,0.03);"><strong>Scripted in LuckyEngine.</strong><br><span style="color:var(--md-default-fg-color--light);">Hands-free, repeatable, same dataset format.</span></figcaption>
+      <figcaption style="padding:10px 14px 12px;font-size:0.85rem;text-align:center;color:var(--md-default-fg-color);"><strong>Scripted in LuckyEngine.</strong><br><span style="color:var(--md-default-fg-color--light);">Hands-free, repeatable, same dataset format.</span></figcaption>
     </figure>
   </div>
-  <p style="text-align:center;font-size:0.95rem;margin:0 0 16px;"><span style="color:var(--md-default-fg-color--light);text-decoration:line-through;">by hand, one at a time</span> &nbsp;<strong style="color:var(--lr-green);">→</strong>&nbsp; <strong>by script, as many as you need</strong></p>
-  <p style="text-align:center;margin:0;"><span style="display:inline-block;background:var(--lr-green);color:#1a1a1a;font-weight:700;font-size:1rem;border-radius:999px;padding:10px 24px;"><strong>72%</strong> success on the real SO-100 — trained only on sim recordings.</span></p>
+  <p style="text-align:center;font-size:0.95rem;margin:0 0 16px;color:var(--md-default-fg-color);"><span style="color:var(--md-default-fg-color--light);text-decoration:line-through;">by hand, one at a time</span> &nbsp;<strong style="color:var(--lr-green);">→</strong>&nbsp; <strong>by script, as many as you need</strong></p>
+  <p style="text-align:center;margin:0;"><span style="display:inline-block;background:var(--lr-green);color:#1a1a1a;font-weight:700;font-size:1rem;border-radius:999px;padding:10px 24px;">72% success on the real SO-100 — trained only on sim recordings.</span></p>
 </div>
 
 **What you'll build:**
