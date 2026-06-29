@@ -1,17 +1,6 @@
 nav:
-  - Lucky Engine:
-    - index.md
-    - whats-new.md
-    - release-notes.md
-    - get-started.md
-    - editor-interface.md
-    - viewport-navigation.md
-    - units.md
-    - assets.md
-    - robots.md
-    - example-projects.md
-    - time-manager.md
-    - grpc-api.md
+  - getting-started
+  - using-the-editor
+  - examples
   - scripting
-  # Future engine sections become top-level folders here — each one its own tab
-  # (e.g. rendering, editor, simulation, the Python SDK).
+  - api-reference
