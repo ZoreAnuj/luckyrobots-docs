@@ -546,12 +546,11 @@ body { font-synthesis: style; }
 }
 
 /* =====================================================================
-   Sidebar navigation — clean, icon-aligned, 8pt spacing rhythm
-   Hierarchy: section labels (muted, 0.67rem, 700) › items (0.8rem, 400)
-   Active: brand-amber left bar + full-opacity text
+   Sidebar navigation — compact, clean, icon-aligned
+   8pt grid · section labels muted · items tight · active = amber bar
    ===================================================================== */
 
-/* ─── Section labels (collapsible section headers) ───────────────────── */
+/* ─── Section labels ─────────────────────────────────────────────────── */
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link,
 .md-nav--primary > .md-nav__list > .md-nav__item > label {
   display: flex;
@@ -559,19 +558,19 @@ body { font-synthesis: style; }
   text-transform: uppercase;
   font-size: 0.67rem;
   font-weight: 700;
-  letter-spacing: 0.085em;
+  letter-spacing: 0.09em;
   color: var(--md-default-fg-color--light);
-  padding: 1rem 0.75rem 0.45rem;
+  padding: 0.85rem 0.6rem 0.3rem;
   border-top: 1px solid var(--md-default-fg-color--lightest);
-  margin-top: 0.125rem;
+  margin-top: 0;
 }
 
-/* Icon + text inside label: single row, truncate if sidebar is narrow */
+/* Icon + text: single line, truncate if too long */
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link .md-ellipsis,
 .md-nav--primary > .md-nav__list > .md-nav__item > label .md-ellipsis {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -579,32 +578,31 @@ body { font-synthesis: style; }
   text-overflow: ellipsis;
 }
 
-/* Section label icon — restrained, optically aligned */
+/* Section icon — font-size drives SVG scale in Material */
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link .md-ellipsis .md-icon,
 .md-nav--primary > .md-nav__list > .md-nav__item > label .md-ellipsis .md-icon {
-  width: 0.85rem;
-  height: 0.85rem;
+  font-size: 0.85rem;
   flex-shrink: 0;
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
-/* First section: no top divider, compact top gap */
+/* First section: no top divider */
 .md-nav--primary > .md-nav__list > .md-nav__item:first-child > .md-nav__link,
 .md-nav--primary > .md-nav__list > .md-nav__item:first-child > label {
   border-top: none;
-  margin-top: 0;
-  padding-top: 0.35rem;
+  padding-top: 0.25rem;
 }
 
-/* ─── Child page items inside each section ───────────────────────────── */
+/* ─── Child page items ───────────────────────────────────────────────── */
 .md-nav--primary .md-nav .md-nav__item .md-nav__link {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 400;
+  line-height: 1;
   color: var(--md-default-fg-color);
-  padding: 0.38rem 0.75rem;
-  border-radius: 0.28rem;
-  opacity: 0.72;
-  transition: opacity 130ms ease, background-color 130ms ease;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.25rem;
+  opacity: 0.68;
+  transition: opacity 120ms ease, background-color 120ms ease;
 }
 
 .md-nav--primary .md-nav .md-nav__item .md-nav__link:hover {
@@ -612,30 +610,29 @@ body { font-synthesis: style; }
   background-color: var(--md-default-fg-color--lightest);
 }
 
-/* Icon + text row inside child links */
+/* Icon + text row */
 .md-nav--primary .md-nav .md-nav__item .md-nav__link .md-ellipsis {
   display: flex;
   align-items: center;
-  gap: 0.42rem;
+  gap: 0.4rem;
 }
 
-/* Child item icon — small, unobtrusive */
+/* Child icon — font-size drives SVG scale */
 .md-nav--primary .md-nav .md-nav__item .md-nav__link .md-icon {
-  width: 0.72rem;
-  height: 0.72rem;
+  font-size: 0.72rem;
   flex-shrink: 0;
   opacity: 0.5;
 }
 
-/* ─── Active page indicator ──────────────────────────────────────────── */
+/* ─── Active page ────────────────────────────────────────────────────── */
 .md-nav__item .md-nav__link--active {
   color: var(--lr-green) !important;
   font-weight: 500;
   opacity: 1 !important;
   border-left: 2px solid var(--lr-green);
-  padding-left: calc(0.75rem - 2px) !important;
+  padding-left: calc(0.6rem - 2px) !important;
 }
 
 .md-nav__item .md-nav__link--active .md-icon {
-  opacity: 0.9 !important;
+  opacity: 0.85 !important;
 }
