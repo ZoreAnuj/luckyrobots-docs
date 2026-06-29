@@ -21,10 +21,9 @@ theme:
   language: en
   font: false            # use the brand fonts defined in extra.css, not Google's Roboto
   features:
-    # No navigation.tabs: every top-level section (Lucky Engine, Scripting) stacks
-    # in one tall scrollable left sidebar — Unreal-style. Make sections collapsible later.
-    - navigation.sections      # render top-level groups as always-expanded section headers
-    - navigation.expand        # expand every nested subsection (API Reference, Guides, …) by default
+    # No navigation.tabs: every top-level section stacks in one tall scrollable left sidebar.
+    # navigation.sections removed → sections are collapsible accordions instead of fixed headers.
+    # navigation.expand removed → sections start collapsed; active section auto-expands.
     - navigation.indexes       # a folder's index.md is its section landing page
     - navigation.top           # back-to-top button
     - navigation.footer
