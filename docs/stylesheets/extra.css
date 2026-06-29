@@ -545,28 +545,87 @@ body { font-synthesis: style; }
   font-weight: 600;
 }
 
-/* Active nav item: orange left accent bar */
-.md-nav__item .md-nav__link--active {
-  border-left: 3px solid var(--lr-green);
-  padding-left: calc(0.6rem - 3px);
-  color: var(--lr-green);
-}
+/* ─── Sidebar Navigation ──────────────────────────────────────────────── */
 
-/* Section headers: uppercase, bold, with top divider */
+/* Section headers — uppercase label style, muted, tracked */
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link,
 .md-nav--primary > .md-nav__list > .md-nav__item > label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   text-transform: uppercase;
-  font-size: 0.72rem;
+  font-size: 0.63rem;
   font-weight: 700;
-  letter-spacing: 0.07em;
-  color: var(--md-default-fg-color);
-  margin-top: 0.25rem;
-  padding-top: 0.9rem;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  color: var(--md-default-fg-color--light);
+  padding: 0.85rem 0.8rem 0.3rem;
+  margin: 0;
   border-top: 1px solid var(--md-default-fg-color--lightest);
 }
 
+/* No divider on the first section */
 .md-nav--primary > .md-nav__list > .md-nav__item:first-child > .md-nav__link,
 .md-nav--primary > .md-nav__list > .md-nav__item:first-child > label {
   border-top: none;
-  padding-top: 0;
+  padding-top: 0.25rem;
+}
+
+/* Active / expanded section: amber accent */
+.md-nav--primary > .md-nav__list > .md-nav__item--active > .md-nav__link,
+.md-nav--primary > .md-nav__list > .md-nav__item--active > label {
+  color: var(--lr-green);
+}
+
+/* Page links inside sections */
+.md-nav--primary .md-nav .md-nav__item .md-nav__link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.4;
+  padding: 0.28rem 0.55rem;
+  margin: 0.05rem 0.4rem;
+  border-radius: 0.3rem;
+  color: var(--md-default-fg-color--light);
+  border-left: none;
+  transition: background 0.12s, color 0.12s;
+}
+
+/* Page link hover */
+.md-nav--primary .md-nav .md-nav__item .md-nav__link:hover {
+  background: var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color);
+}
+
+/* Active page: pill highlight, no border-left shift */
+.md-nav__item .md-nav__link--active {
+  color: var(--lr-green) !important;
+  background: rgba(236, 158, 36, 0.10) !important;
+  border-left: none !important;
+  font-weight: 500;
+}
+
+/* Icons inside nav links — consistent 0.875rem, vertically centered */
+.md-nav__link > svg:not(.md-nav__icon) {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  opacity: 0.65;
+}
+
+/* Active page icon: full amber */
+.md-nav__link--active > svg:not(.md-nav__icon) {
+  opacity: 1;
+}
+
+/* Section chevron — push right, smaller, subtle */
+.md-nav--primary > .md-nav__list > .md-nav__item > label > .md-nav__icon,
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link > .md-nav__icon {
+  margin-left: auto;
+  width: 0.7rem;
+  height: 0.7rem;
+  opacity: 0.45;
+  flex-shrink: 0;
 }
