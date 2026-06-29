@@ -547,19 +547,27 @@ body { font-synthesis: style; }
 
 /* ─── Sidebar Navigation ──────────────────────────────────────────────── */
 
-/* Section headers — uppercase label style, muted, tracked */
+/* Material renders a <label for="__toc"> TOC toggle inside the active page's
+   nav item — it's desktop-hidden normally, but display:flex on .md-nav__link
+   overrides that. Kill it explicitly so it never shows a phantom duplicate. */
+label.md-nav__link[for="__toc"] {
+  display: none !important;
+}
+
+/* Section headers — uppercase label, muted, icon + text top-aligned so
+   multi-word titles (API & INTEGRATION) wrap cleanly without icon descending */
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link,
 .md-nav--primary > .md-nav__list > .md-nav__item > label {
   display: flex;
-  align-items: center;
-  gap: 0.45rem;
+  align-items: flex-start;
+  gap: 0.4rem;
   text-transform: uppercase;
-  font-size: 0.63rem;
+  font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  line-height: 1.2;
+  line-height: 1.3;
   color: var(--md-default-fg-color--light);
-  padding: 0.85rem 0.8rem 0.3rem;
+  padding: 0.85rem 0.75rem 0.3rem;
   margin: 0;
   border-top: 1px solid var(--md-default-fg-color--lightest);
 }
@@ -577,10 +585,10 @@ body { font-synthesis: style; }
   color: var(--lr-green);
 }
 
-/* Page links inside sections */
-.md-nav--primary .md-nav .md-nav__item .md-nav__link {
+/* Page links — target <a> only, never <label>, to avoid catching any toggle */
+.md-nav--primary .md-nav .md-nav__item > a.md-nav__link {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
   font-size: 0.8rem;
   font-weight: 400;
@@ -593,39 +601,47 @@ body { font-synthesis: style; }
   transition: background 0.12s, color 0.12s;
 }
 
-/* Page link hover */
-.md-nav--primary .md-nav .md-nav__item .md-nav__link:hover {
+.md-nav--primary .md-nav .md-nav__item > a.md-nav__link:hover {
   background: var(--md-default-fg-color--lightest);
   color: var(--md-default-fg-color);
 }
 
-/* Active page: pill highlight, no border-left shift */
-.md-nav__item .md-nav__link--active {
+/* Active page: amber pill, no border-left layout shift */
+.md-nav__item > a.md-nav__link--active {
   color: var(--lr-green) !important;
   background: rgba(236, 158, 36, 0.10) !important;
   border-left: none !important;
   font-weight: 500;
 }
 
-/* Icons inside nav links — consistent 0.875rem, vertically centered */
-.md-nav__link > svg:not(.md-nav__icon) {
-  width: 0.875rem;
-  height: 0.875rem;
+/* Page icons — pin to top of first text line when title wraps */
+.md-nav--primary .md-nav a.md-nav__link > svg:not(.md-nav__icon) {
+  width: 0.85rem;
+  height: 0.85rem;
   flex-shrink: 0;
-  opacity: 0.65;
+  margin-top: 0.14rem;
+  opacity: 0.6;
 }
-
-/* Active page icon: full amber */
-.md-nav__link--active > svg:not(.md-nav__icon) {
+.md-nav--primary .md-nav a.md-nav__link--active > svg:not(.md-nav__icon) {
   opacity: 1;
 }
 
-/* Section chevron — push right, smaller, subtle */
+/* Section header icons — slightly smaller, top-pinned */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link > svg:not(.md-nav__icon),
+.md-nav--primary > .md-nav__list > .md-nav__item > label > svg:not(.md-nav__icon) {
+  width: 0.78rem;
+  height: 0.78rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+/* Section chevron — push right, smaller, subtle, top-pinned */
 .md-nav--primary > .md-nav__list > .md-nav__item > label > .md-nav__icon,
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link > .md-nav__icon {
   margin-left: auto;
-  width: 0.7rem;
-  height: 0.7rem;
-  opacity: 0.45;
+  width: 0.68rem;
+  height: 0.68rem;
+  opacity: 0.4;
   flex-shrink: 0;
+  margin-top: 0.04rem;
 }
