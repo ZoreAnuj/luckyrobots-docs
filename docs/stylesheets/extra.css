@@ -546,8 +546,10 @@ body { font-synthesis: style; }
 }
 
 /* =====================================================================
-   Sidebar navigation — compact, clean, icon-aligned
-   8pt grid · section labels muted · items tight · active = amber bar
+   Sidebar navigation — compact, clean, minimal
+   3-pass: (1) no flex on .md-ellipsis → text-overflow preserved
+           (2) deep selector on child items → no section-header collision
+           (3) explicit svg sizing, opacity ≥0.78, reduced-motion guard
    ===================================================================== */
 
 /* ─── Section labels ─────────────────────────────────────────────────── */
@@ -555,84 +557,109 @@ body { font-synthesis: style; }
 .md-nav--primary > .md-nav__list > .md-nav__item > label {
   display: flex;
   align-items: center;
+  cursor: pointer;
   text-transform: uppercase;
-  font-size: 0.67rem;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.09em;
   color: var(--md-default-fg-color--light);
-  padding: 0.85rem 0.6rem 0.3rem;
+  padding: 0.65rem 0.6rem 0.25rem;
   border-top: 1px solid var(--md-default-fg-color--lightest);
   margin-top: 0;
 }
 
-/* Icon + text: single line, truncate if too long */
+/* .md-ellipsis: flex child only — do NOT set display:flex here.
+   Material sets overflow:hidden + text-overflow:ellipsis + white-space:nowrap
+   on this element as a block; overriding display:flex breaks that. */
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link .md-ellipsis,
 .md-nav--primary > .md-nav__list > .md-nav__item > label .md-ellipsis {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
   flex: 1;
   min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
-/* Section icon — font-size drives SVG scale in Material */
+/* Section icon: inline-flex so it flows with the text node inside the
+   block .md-ellipsis and text-overflow still truncates properly */
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link .md-ellipsis .md-icon,
 .md-nav--primary > .md-nav__list > .md-nav__item > label .md-ellipsis .md-icon {
-  font-size: 0.85rem;
-  flex-shrink: 0;
+  display: inline-flex !important;
+  align-items: center;
+  vertical-align: -0.18em;
+  width: 0.82rem !important;
+  height: 0.82rem !important;
+  font-size: 0.82rem;
+  margin-right: 0.42rem;
   opacity: 0.65;
 }
 
-/* First section: no top divider */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link .md-ellipsis .md-icon svg,
+.md-nav--primary > .md-nav__list > .md-nav__item > label .md-ellipsis .md-icon svg {
+  width: 0.82rem !important;
+  height: 0.82rem !important;
+}
+
+/* No top divider on the first section */
 .md-nav--primary > .md-nav__list > .md-nav__item:first-child > .md-nav__link,
 .md-nav--primary > .md-nav__list > .md-nav__item:first-child > label {
   border-top: none;
-  padding-top: 0.25rem;
+  padding-top: 0.2rem;
 }
 
 /* ─── Child page items ───────────────────────────────────────────────── */
-.md-nav--primary .md-nav .md-nav__item .md-nav__link {
+/* Deep path via > .md-nav ensures section headers (direct children of
+   top-level .md-nav__item) are NOT matched — specificity (0,6,0) > (0,4,0) */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav .md-nav__item > .md-nav__link {
   font-size: 0.78rem;
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.4;
   color: var(--md-default-fg-color);
-  padding: 0.3rem 0.6rem;
+  padding: 0.35rem 0.6rem;
   border-radius: 0.25rem;
-  opacity: 0.68;
-  transition: opacity 120ms ease, background-color 120ms ease;
+  opacity: 0.78;
+  transition: opacity 150ms ease, background-color 150ms ease;
 }
 
-.md-nav--primary .md-nav .md-nav__item .md-nav__link:hover {
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav .md-nav__item > .md-nav__link:hover {
   opacity: 1;
   background-color: var(--md-default-fg-color--lightest);
 }
 
-/* Icon + text row */
-.md-nav--primary .md-nav .md-nav__item .md-nav__link .md-ellipsis {
-  display: flex;
+/* Child icon: inline-flex + explicit SVG dimensions */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav .md-nav__item > .md-nav__link .md-icon {
+  display: inline-flex !important;
   align-items: center;
-  gap: 0.4rem;
+  vertical-align: -0.15em;
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+  font-size: 0.75rem;
+  margin-right: 0.4rem;
+  opacity: 0.55;
 }
 
-/* Child icon — font-size drives SVG scale */
-.md-nav--primary .md-nav .md-nav__item .md-nav__link .md-icon {
-  font-size: 0.72rem;
-  flex-shrink: 0;
-  opacity: 0.5;
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav .md-nav__item > .md-nav__link .md-icon svg {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
 }
 
-/* ─── Active page ────────────────────────────────────────────────────── */
-.md-nav__item .md-nav__link--active {
+/* ─── Active state ───────────────────────────────────────────────────── */
+/* All active links: amber text */
+.md-nav__link--active {
   color: var(--lr-green) !important;
-  font-weight: 500;
   opacity: 1 !important;
-  border-left: 2px solid var(--lr-green);
-  padding-left: calc(0.6rem - 2px) !important;
 }
 
-.md-nav__item .md-nav__link--active .md-icon {
+/* Child items only: inset left accent bar (box-shadow = no layout shift) */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav .md-nav__item > .md-nav__link--active {
+  font-weight: 500;
+  box-shadow: inset 2px 0 0 var(--lr-green);
+}
+
+.md-nav__link--active .md-icon {
   opacity: 0.85 !important;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav .md-nav__item > .md-nav__link {
+    transition: none;
+  }
 }
