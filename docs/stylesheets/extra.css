@@ -561,20 +561,22 @@ body { font-synthesis: style; }
   text-transform: uppercase;
   font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.06em;
   color: var(--md-default-fg-color--light);
   padding: 0.65rem 0.6rem 0.25rem;
   border-top: 1px solid var(--md-default-fg-color--lightest);
   margin-top: 0;
 }
 
-/* .md-ellipsis: flex child only — do NOT set display:flex here.
-   Material sets overflow:hidden + text-overflow:ellipsis + white-space:nowrap
-   on this element as a block; overriding display:flex breaks that. */
+/* .md-ellipsis in section headers: explicit truncation — don't set display:flex
+   (that would break text-overflow), just constrain as flex child */
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link .md-ellipsis,
 .md-nav--primary > .md-nav__list > .md-nav__item > label .md-ellipsis {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Section icon: inline-flex so it flows with the text node inside the
@@ -621,6 +623,15 @@ body { font-synthesis: style; }
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav .md-nav__item > .md-nav__link:hover {
   opacity: 1;
   background-color: var(--md-default-fg-color--lightest);
+}
+
+/* Child .md-ellipsis: force single-line so long titles truncate, not wrap */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav .md-nav__item > .md-nav__link .md-ellipsis {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Child icon: inline-flex + explicit SVG dimensions */
