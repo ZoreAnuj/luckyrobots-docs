@@ -80,8 +80,6 @@ session_<ts>/
 | `observation.state` | All actuated joint qpos — trim to what your policy needs |
 | `observation.images.<cam>` | `uint8` RGB as h264 mp4 chunks |
 
-!!! tip "Use 96×96 cameras"
-    Larger resolutions break the 30 Hz inference budget.
 
 ---
 
