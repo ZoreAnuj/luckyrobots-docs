@@ -1,3 +1,7 @@
+---
+icon: material/cube-outline
+---
+
 # Example Projects
 
 Lucky Engine ships with ready-made example projects in the Content Vault. Each one is a

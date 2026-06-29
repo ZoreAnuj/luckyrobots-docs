@@ -1,3 +1,7 @@
+---
+icon: material/note-text-outline
+---
+
 # Release Notes
 
 Patch history for this release line. Each heading is a minor patch and is directly

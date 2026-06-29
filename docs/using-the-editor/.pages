@@ -1,5 +1,6 @@
 title: Using the Editor
 nav:
+  - index.md
   - editor-interface.md
   - viewport-navigation.md
   - units.md

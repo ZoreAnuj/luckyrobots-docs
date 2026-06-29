@@ -1,3 +1,7 @@
+---
+icon: material/arrow-all
+---
+
 # Viewport Navigation
 
 The editor viewport has three navigation modes, each entered by a different modifier: a

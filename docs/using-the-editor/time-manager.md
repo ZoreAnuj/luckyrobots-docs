@@ -1,3 +1,7 @@
+---
+icon: material/clock-outline
+---
+
 # The Time Manager
 
 Lucky Engine's Time Manager is the conductor of the simulation. It decides what runs,

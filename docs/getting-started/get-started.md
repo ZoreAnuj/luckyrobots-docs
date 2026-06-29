@@ -1,3 +1,7 @@
+---
+icon: material/play-circle-outline
+---
+
 # Get Started
 
 Lucky Engine is a desktop editor. Installing it, launching it, and opening the bundled

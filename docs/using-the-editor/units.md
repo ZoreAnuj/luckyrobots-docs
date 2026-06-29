@@ -1,3 +1,7 @@
+---
+icon: material/ruler
+---
+
 # Units
 
 Lucky Engine uses **SI units** throughout. Distances are in metres, time in seconds,

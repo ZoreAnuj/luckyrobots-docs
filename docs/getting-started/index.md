@@ -1,3 +1,7 @@
+---
+icon: material/rocket-launch
+---
+
 # Overview
 
 Welcome to **Lucky Engine** — a hyperrealistic robotics simulation platform built on Unreal Engine 5 and MuJoCo physics.

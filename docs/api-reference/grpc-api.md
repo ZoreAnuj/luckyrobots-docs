@@ -1,3 +1,7 @@
+---
+icon: material/api
+---
+
 # gRPC API
 
 Lucky Engine runs an in-process gRPC server. It is the primary programmatic interface to

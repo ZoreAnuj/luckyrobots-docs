@@ -1,3 +1,7 @@
+---
+icon: material/star-outline
+---
+
 # What's New
 
 This page lists the highlights of each Lucky Engine release. Lucky Engine **2026.1** is

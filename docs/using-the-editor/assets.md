@@ -1,3 +1,7 @@
+---
+icon: material/folder-outline
+---
+
 # Assets
 
 Assets are the files a project is built from: scenes, meshes, materials, textures, robot

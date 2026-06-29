@@ -1,3 +1,7 @@
+---
+icon: material/monitor-screenshot
+---
+
 # Editor Interface
 
 The Lucky Engine editor is built around a central 3D viewport surrounded by dockable

@@ -1,3 +1,4 @@
-title: API Reference
+title: API & Integration
 nav:
+  - index.md
   - grpc-api.md

@@ -1,3 +1,7 @@
+---
+icon: material/robot
+---
+
 # LeRobot: Sim-to-Real Tutorial
 
 <div style="background:var(--md-default-bg-color--light);border:1px solid var(--md-default-fg-color--lightest);border-radius:14px;padding:36px 32px 28px;margin:24px 0 32px;">

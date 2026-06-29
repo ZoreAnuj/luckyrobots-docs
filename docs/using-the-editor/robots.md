@@ -1,3 +1,7 @@
+---
+icon: material/face-agent
+---
+
 # Robots
 
 Robots in Lucky Engine are delivered as packs. Each pack is built around an MJCF

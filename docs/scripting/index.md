@@ -1,3 +1,7 @@
+---
+icon: material/code-tags
+---
+
 # Lucky Engine Scripting
 
 Write C# to drive behavior in Lucky Engine scenes: move entities, respond to
