@@ -545,103 +545,97 @@ body { font-synthesis: style; }
   font-weight: 600;
 }
 
-/* ─── Sidebar Navigation ──────────────────────────────────────────────── */
+/* =====================================================================
+   Sidebar navigation — clean, icon-aligned, 8pt spacing rhythm
+   Hierarchy: section labels (muted, 0.67rem, 700) › items (0.8rem, 400)
+   Active: brand-amber left bar + full-opacity text
+   ===================================================================== */
 
-/* Material renders a <label for="__toc"> TOC toggle inside the active page's
-   nav item — it's desktop-hidden normally, but display:flex on .md-nav__link
-   overrides that. Kill it explicitly so it never shows a phantom duplicate. */
-label.md-nav__link[for="__toc"] {
-  display: none !important;
-}
-
-/* Section headers — uppercase label, muted, icon + text top-aligned so
-   multi-word titles (API & INTEGRATION) wrap cleanly without icon descending */
+/* ─── Section labels (collapsible section headers) ───────────────────── */
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link,
 .md-nav--primary > .md-nav__list > .md-nav__item > label {
   display: flex;
-  align-items: flex-start;
-  gap: 0.4rem;
+  align-items: center;
   text-transform: uppercase;
-  font-size: 0.62rem;
+  font-size: 0.67rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  line-height: 1.3;
+  letter-spacing: 0.085em;
   color: var(--md-default-fg-color--light);
-  padding: 0.85rem 0.75rem 0.3rem;
-  margin: 0;
+  padding: 1rem 0.75rem 0.45rem;
   border-top: 1px solid var(--md-default-fg-color--lightest);
+  margin-top: 0.125rem;
 }
 
-/* No divider on the first section */
-.md-nav--primary > .md-nav__list > .md-nav__item:first-child > .md-nav__link,
-.md-nav--primary > .md-nav__list > .md-nav__item:first-child > label {
-  border-top: none;
-  padding-top: 0.25rem;
-}
-
-/* Active / expanded section: amber accent */
-.md-nav--primary > .md-nav__list > .md-nav__item--active > .md-nav__link,
-.md-nav--primary > .md-nav__list > .md-nav__item--active > label {
-  color: var(--lr-green);
-}
-
-/* Page links — target <a> only, never <label>, to avoid catching any toggle */
-.md-nav--primary .md-nav .md-nav__item > a.md-nav__link {
+/* Icon + text inside label: single row, truncate if sidebar is narrow */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link .md-ellipsis,
+.md-nav--primary > .md-nav__list > .md-nav__item > label .md-ellipsis {
   display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 400;
-  line-height: 1.4;
-  padding: 0.28rem 0.55rem;
-  margin: 0.05rem 0.4rem;
-  border-radius: 0.3rem;
-  color: var(--md-default-fg-color--light);
-  border-left: none;
-  transition: background 0.12s, color 0.12s;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.md-nav--primary .md-nav .md-nav__item > a.md-nav__link:hover {
-  background: var(--md-default-fg-color--lightest);
-  color: var(--md-default-fg-color);
-}
-
-/* Active page: amber pill, no border-left layout shift */
-.md-nav__item > a.md-nav__link--active {
-  color: var(--lr-green) !important;
-  background: rgba(236, 158, 36, 0.10) !important;
-  border-left: none !important;
-  font-weight: 500;
-}
-
-/* Page icons — pin to top of first text line when title wraps */
-.md-nav--primary .md-nav a.md-nav__link > svg:not(.md-nav__icon) {
+/* Section label icon — restrained, optically aligned */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link .md-ellipsis .md-icon,
+.md-nav--primary > .md-nav__list > .md-nav__item > label .md-ellipsis .md-icon {
   width: 0.85rem;
   height: 0.85rem;
   flex-shrink: 0;
-  margin-top: 0.14rem;
   opacity: 0.6;
 }
-.md-nav--primary .md-nav a.md-nav__link--active > svg:not(.md-nav__icon) {
+
+/* First section: no top divider, compact top gap */
+.md-nav--primary > .md-nav__list > .md-nav__item:first-child > .md-nav__link,
+.md-nav--primary > .md-nav__list > .md-nav__item:first-child > label {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0.35rem;
+}
+
+/* ─── Child page items inside each section ───────────────────────────── */
+.md-nav--primary .md-nav .md-nav__item .md-nav__link {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--md-default-fg-color);
+  padding: 0.38rem 0.75rem;
+  border-radius: 0.28rem;
+  opacity: 0.72;
+  transition: opacity 130ms ease, background-color 130ms ease;
+}
+
+.md-nav--primary .md-nav .md-nav__item .md-nav__link:hover {
   opacity: 1;
+  background-color: var(--md-default-fg-color--lightest);
 }
 
-/* Section header icons — slightly smaller, top-pinned */
-.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link > svg:not(.md-nav__icon),
-.md-nav--primary > .md-nav__list > .md-nav__item > label > svg:not(.md-nav__icon) {
-  width: 0.78rem;
-  height: 0.78rem;
-  flex-shrink: 0;
-  margin-top: 0.05rem;
+/* Icon + text row inside child links */
+.md-nav--primary .md-nav .md-nav__item .md-nav__link .md-ellipsis {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
 }
 
-/* Section chevron — push right, smaller, subtle, top-pinned */
-.md-nav--primary > .md-nav__list > .md-nav__item > label > .md-nav__icon,
-.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link > .md-nav__icon {
-  margin-left: auto;
-  width: 0.68rem;
-  height: 0.68rem;
-  opacity: 0.4;
+/* Child item icon — small, unobtrusive */
+.md-nav--primary .md-nav .md-nav__item .md-nav__link .md-icon {
+  width: 0.72rem;
+  height: 0.72rem;
   flex-shrink: 0;
-  margin-top: 0.04rem;
+  opacity: 0.5;
+}
+
+/* ─── Active page indicator ──────────────────────────────────────────── */
+.md-nav__item .md-nav__link--active {
+  color: var(--lr-green) !important;
+  font-weight: 500;
+  opacity: 1 !important;
+  border-left: 2px solid var(--lr-green);
+  padding-left: calc(0.75rem - 2px) !important;
+}
+
+.md-nav__item .md-nav__link--active .md-icon {
+  opacity: 0.9 !important;
 }
