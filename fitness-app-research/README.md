@@ -10,6 +10,11 @@ Never published to the App Store; installed via Xcode free provisioning.
 - **[SYNTHESIS.md](SYNTHESIS.md)** — the master document: feasibility verdict, product
   thesis, data inventory, feature spec (5 tabs), XP/RPG model, architecture, design
   system, and phased build roadmap.
+- **[PRODUCT-PLAN.md](PRODUCT-PLAN.md)** — product brief: vision, principles, user story
+  map, MoSCoW scope, open decisions with defaults, success criteria, risks.
+- **[IMPLEMENTATION-PLAN.md](IMPLEMENTATION-PLAN.md)** — technical design: dev workflow
+  (Claude writes / you build in Xcode), project structure, data model, engine formulas,
+  SyncEngine design, screen blueprints, 7-milestone build sequence, Phase-0 spike.
 - **[regions/](regions/)** — raw findings from 21 parallel research agents, one file per
   subregion:
 
